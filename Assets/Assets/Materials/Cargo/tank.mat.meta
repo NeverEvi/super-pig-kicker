@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d7ea547681504bc448cbfe920ab2a966
+timeCreated: 1440606533
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 44795
+  packageName: LowPoly Trucks V.1
+  packageVersion: 1.0
+  assetPath: Assets/Assets/Materials/Cargo/tank.mat
+  uploadId: 78797
