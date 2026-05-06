@@ -21,6 +21,7 @@ public class PlayerSaveData
 {
     public float posX, posY, posZ;
     public float rotX, rotY, rotZ, rotW;
+    public int kickStrength;
 }
 
 [Serializable]
@@ -38,32 +39,19 @@ public class ShopSaveData
 {
     public bool goldenPigBought;
     public bool alienBought;
+    public bool cyborgBought;
     public bool hasTech;
+    public bool suckoBought;
 
     public int permitCost;
     public int troughCost;
     public int patchCost;
+    public int goldPatchCost;
+    public int kickCost;
 
-    public bool dishActive;
-    public bool ufoActive;
-    public bool alienButtonActive;
-    public bool cyborgButtonActive;
-    public bool cyboargButtonActive;
-    public bool angelButtonActive;
-    
     public bool devilButtonActive;
     public string devilCostText;
 
-    public bool carrotButtonActive;
-    public bool patchButtonActive;
-    public bool goldPatchButtonActive;
-    public bool techButtonActive;
-
-    public bool dishButtonInteractable;
-    public bool permitButtonInteractable;
-    public bool troughButtonInteractable;
-    public bool patchButtonInteractable;
-    public bool goldPatchButtonInteractable;
 }
 
 [Serializable]
@@ -86,6 +74,4 @@ public class PigSaveData
     public int pigType;
     public bool beenKicked;
 
-    // Optional if you need it later
-    public int baconPerKick;
 }

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8036787011537750979}
   - component: {fileID: -4245394433838001621}
   - component: {fileID: -4420362093298923156}
+  - component: {fileID: 8496530316163163334}
   m_Layer: 0
   m_Name: Crate
   m_TagString: Untagged
@@ -133,8 +134,17 @@ MonoBehaviour:
   Golden: {fileID: 1442970519945211793, guid: de978619fe97ed0439d41e77775342da, type: 3}
   Alien: {fileID: 1442970519945211793, guid: 22b4850266cf9054bb3b7f317fcf0ff4, type: 3}
   Cyborg: {fileID: 1442970519945211793, guid: 5c6f67f9e1803284eaf7d3e540e32791, type: 3}
+  Cyboarg: {fileID: 1442970519945211793, guid: 008a2782ad5a9f44193489cd2a834d80, type: 3}
   Angel: {fileID: 1442970519945211793, guid: 0968240321f49ab41a9ff5dc65a07dc7, type: 3}
-  pigType: Pig
+  pigType: 0
+  minShakeDelay: 3
+  maxShakeDelay: 9
+  thumpStrength: 0.08
+  thumpDuration: 0.08
+  thumpUpward: 0.1
+  pauseBetweenThumps: 0.12
+  hitClip: {fileID: 8300000, guid: d8520fd1628487449b49b88f22eda200, type: 3}
+  groundClip: {fileID: 8300000, guid: 1ec11770a516047439863974ee384c8f, type: 3}
 --- !u!54 &-4420362093298923156
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -143,7 +153,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6570003848901705360}
   serializedVersion: 5
-  m_Mass: 1
+  m_Mass: 1.5
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -162,3 +172,100 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!82 &8496530316163163334
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6570003848901705360}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1.4
+  MaxDistance: 15
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4

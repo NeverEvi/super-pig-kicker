@@ -57,6 +57,10 @@ PrefabInstance:
       value: Carrot
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: cdd74c5fa1d9ead459d3d3906f9117f0, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cdd74c5fa1d9ead459d3d3906f9117f0, type: 3}
       propertyPath: m_TagString
       value: Carrot
       objectReference: {fileID: 0}
@@ -119,7 +123,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
