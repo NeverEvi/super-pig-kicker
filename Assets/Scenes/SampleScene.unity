@@ -4163,7 +4163,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8097204176152261706, guid: e350897f3d1b6e04791ae97b3adb5ca5, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8266164887654252449, guid: e350897f3d1b6e04791ae97b3adb5ca5, type: 3}
       propertyPath: baconValue
@@ -9769,7 +9769,7 @@ MonoBehaviour:
   crateCount: 0
   pigsKicked: 0
   angelKills: 0
-  SSK: 0.75
+  SSK: 0.05
   SPK: 0.05
   immune: 0
   totalScore: 0
