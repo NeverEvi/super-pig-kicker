@@ -308,6 +308,7 @@ public class PigCombat : MonoBehaviour
     public void DamagePlayer(Vector3 hitPosition, int loss)
     {
         Damage.instance.BaconDamage(loss, hitPosition);
+        GameManager.instance.UpdateScore(-20);
     }
 
     #region BOSS SPECIALS

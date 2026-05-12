@@ -30,8 +30,10 @@ public class MainMenu : MonoBehaviour
     public GameObject cyborgPigPrefab;
     public GameObject angelPigPrefab;
     public GameObject devilPrefab;
+    public GameObject potatoPrefab;
 
     public Vector3 spawnpos = new (1.05110359f, 10.8000002f, 2.64636302f);
+    private Vector3 potatopos = new Vector3(-3.89945507f, 12.56200004f, 10.1427422f);
     PlayerController pc;
     private bool isStarting = false;
 
@@ -83,7 +85,7 @@ public class MainMenu : MonoBehaviour
             spawnPoint.transform.position,
             new Quaternion(0f, -0.449043423f, 0f, 0.893509984f)
         );
-
+        StartCoroutine(SpawnNGPlusPotatoes(GameManager.instance.newGamePlus));
         mainmenu.SetActive(false);
         title.SetActive(true);
         
@@ -96,9 +98,11 @@ public class MainMenu : MonoBehaviour
         rb.isKinematic = false;
 
         yield return StartCoroutine(FadeBlackout(1f, 0f));
+        
         kickTutorial.SetActive(true);
         yield return StartCoroutine(EnableControls());
         isStarting = false;
+        
     }
 
     private IEnumerator ContinueRoutine()
@@ -339,6 +343,29 @@ public class MainMenu : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    private IEnumerator SpawnNGPlusPotatoes(int potatoes)
+    {
+        int spawned = 0;
+        while (spawned < potatoes)
+        {
+            GameObject potato =
+            Instantiate(potatoPrefab, potatopos, Quaternion.identity);
+
+            Rigidbody rb = potato.GetComponent<Rigidbody>();
+
+            if (rb != null)
+            {
+                rb.AddTorque(
+                    Random.insideUnitSphere * 0.1f,
+                    ForceMode.Impulse
+                );
+            }
+
+            spawned++;
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     private void OnApplicationQuit()

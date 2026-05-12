@@ -1,6 +1,7 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
+using static Unity.Burst.Intrinsics.X86;
 
 public class Pig : MonoBehaviour
 {
@@ -13,7 +14,9 @@ public class Pig : MonoBehaviour
     [Header("Wander")]
 
     public float wanderRadius = 2f; // max random offset for wandering
-    public float wanderChangeInterval = 2f; // seconds between direction changes
+    public float minWanderChangeInterval = 2.5f; // seconds between direction changes
+    public float maxWanderChangeInterval = 5f; // seconds between direction changes
+
     private Vector3 wanderTarget;
     private Vector3 wanderCenter = new (2.02f, 0.43f, 1.54f);
 
@@ -22,8 +25,10 @@ public class Pig : MonoBehaviour
     public float kickForce = 5f; // how strongly the pig flies back
     
     public bool isUpright = true;
-    private float uprightDelay = 1.7f; // seconds to stand back up
+    private float uprightDelay = 0.6f; // seconds to stand back up
     private Coroutine standUprightRoutine;
+    public GameObject SSK;
+    public GameObject SPK;
 
     [Header("Stats")]
     public int hp = 30, mhp = 30;
@@ -43,7 +48,7 @@ public class Pig : MonoBehaviour
     public GameObject backLeftLeg;
     public GameObject backRightLeg;
 
-    public float legSwingAmplitude = 20f; // max rotation angle
+    public float legSwingAmplitude = 22f; // max rotation angle
     public float legSwingSpeed = 5f;      // how fast legs swing
     private float legTimer = 0f;
 
@@ -63,11 +68,25 @@ public class Pig : MonoBehaviour
 
     void Start()
     {
+        foreach (GameObject go in Resources.FindObjectsOfTypeAll<GameObject>())
+        {
+            if (go.name == "SPINKICK")
+            {
+                SSK = go;
+                break;
+            }
+        }
+        foreach (GameObject go in Resources.FindObjectsOfTypeAll<GameObject>())
+        {
+            if (go.name == "SUPERKICK")
+            {
+                SPK = go;
+                break;
+            }
+        }
         player = GameObject.FindGameObjectWithTag("Player").transform;
         rb = GetComponent<Rigidbody>();
-        if (rb == null)
-            rb = gameObject.AddComponent<Rigidbody>();
-        // add or get an AudioSource
+        if (rb == null) rb = gameObject.AddComponent<Rigidbody>();
 
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
@@ -83,11 +102,24 @@ public class Pig : MonoBehaviour
 
     void Update()
     {
-        if (isUpright)
+        if (!isUpright) return;
+
+        balanceCheckTime += Time.deltaTime;
+
+
+        if (pigType != PigType.Devil) AnimateLegs(true);
+
+        
+        if (balanceCheckTime > 10f)
         {
-            if (pigType != PigType.Devil) AnimateLegs(true);
-            HandleMovement();
+            balanceCheckTime = 0f;
+
+            float uprightDot = Vector3.Dot(transform.up, Vector3.up);
+
+            if (uprightDot < 0.15f) StartStandUpright();
         }
+
+        HandleMovement();
     }
 
     public void Kick(int damage, Transform kicker = null)
@@ -101,13 +133,84 @@ public class Pig : MonoBehaviour
         }
         Damage.instance.BaconDamage(damage, Vector3.zero, this);
 
+        //float timeSinceKick = Time.time - PlayerKick.instance.lastSuccessfulKickTime;
+
         // apply knockback force
         if (rb != null && kicker != null)
         {
-            Vector3 forceDir = (transform.position - kicker.position).normalized + Vector3.up * 0.3f;
-            rb.AddForce(forceDir * kickForce, ForceMode.Impulse);
+            Vector3 awayDir = (transform.position - kicker.position).normalized;
+
             float spinStrength = 1f;
-            rb.AddTorque(Vector3.forward * spinStrength, ForceMode.Impulse);
+            float totalKickForce = kickForce;
+            float upwardForce = 4f;
+
+            //Vector3 forceDir = ((transform.position - kicker.position) + Vector3.up * 2f).normalized;
+            float SSK_Chance = Random.value;
+            float SPK_Chance = Random.value;
+            if (SPK_Chance < GameManager.instance.SPK)
+            {
+                Debug.Log($"SPK");
+                SPK.SetActive(true);
+
+                spinStrength = 2.2f;
+                totalKickForce += 2f;
+                upwardForce = 5f;
+                int top = 1;
+                rb.maxAngularVelocity = 100f;
+                rb.angularVelocity = Random.onUnitSphere * 20f;
+                switch (pigType)
+                {
+                    case (PigType.Pig):
+                        top = 2;
+                        break;
+                    case (PigType.Boar):
+                        top = 3;
+                        break;
+                    case (PigType.Golden):
+                        top = 4;
+                        break;
+                    case (PigType.Alien):
+                        top = 5;
+                        break;
+                    case (PigType.Cyborg):
+                        top = 6;
+                        break;
+                    case (PigType.Cyboarg):
+                        top = 7;
+                        break;
+                    case (PigType.Angel):
+                        top = 8;
+                        break;
+                    case (PigType.Devil):
+                        top = 10;
+                        break;
+                }
+                top += GameManager.instance.newGamePlus;
+                Damage.instance.BaconDamage(Random.Range(1,top+1), Vector3.zero, this);
+            }
+            else if (SSK_Chance < GameManager.instance.SSK)
+            {
+                Debug.Log($"SSK");
+                SSK.SetActive(true);
+
+                spinStrength = 90f;
+                totalKickForce += 0.2f;
+                upwardForce = 4.2f;
+                rb.maxAngularVelocity = 100f;
+                rb.angularVelocity = Random.onUnitSphere * 50f;
+
+                Damage.instance.BaconDamage(2, Vector3.zero, this);
+            }
+            else 
+            { 
+                Debug.Log($"no SSK"); 
+
+            }
+            //rb.AddForce(forceDir * totalKickForce, ForceMode.Impulse);
+            //rb.AddTorque(Vector3.forward * spinStrength, ForceMode.Impulse);
+            rb.AddForce(awayDir * totalKickForce, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * upwardForce, ForceMode.Impulse);
+            rb.AddTorque(Random.insideUnitSphere * spinStrength, ForceMode.Impulse);
         }
 
         hp -= damage;
@@ -180,10 +283,34 @@ public class Pig : MonoBehaviour
 
         standUprightRoutine = StartCoroutine(StandUpright());
     }
+    private bool IsGrounded()
+    {
+        BoxCollider box = GetComponent<BoxCollider>();
+
+        Vector3 localCenter = box.center + Vector3.forward * 0.05f;
+        Vector3 worldCenter = transform.TransformPoint(localCenter);
+
+        Vector3 halfExtents = (box.size * 0.5f) + new Vector3(0.05f, 0.05f, 0.15f);
+
+        Collider[] hits = Physics.OverlapBox(
+            worldCenter,
+            halfExtents,
+            transform.rotation,
+            LayerMask.GetMask("Ground")
+        );
+
+        return hits.Length > 0;
+    }
     public IEnumerator StandUpright()
     {
+        yield return new WaitForSeconds(uprightDelay/2);
+
+        while (!IsGrounded())
+        {
+            yield return null;
+        }
         yield return new WaitForSeconds(uprightDelay);
-        
+
         if (rb != null)
         {
             rb.angularVelocity = Vector3.zero;
@@ -192,7 +319,7 @@ public class Pig : MonoBehaviour
             Quaternion uprightRotation = Quaternion.Euler(0f, transform.eulerAngles.y, 0f);
             float timer = 0f;
             float duration = 0.8f;
-
+            rb.AddForce(Vector3.up * 1.2f, ForceMode.Impulse);
             while (timer < duration)
             {
                 transform.rotation = Quaternion.Slerp(transform.rotation, uprightRotation, timer / duration);
@@ -234,11 +361,13 @@ public class Pig : MonoBehaviour
             yield return new WaitForSeconds(healCheckInterval);
         }
     }
+    private Vector3 rawWanderTarget;
     private float balanceCheckTime = 0f;
     private IEnumerator WanderRoutine()
     {
         while (true)
         {
+            float nextWanderWait = Random.Range(minWanderChangeInterval, maxWanderChangeInterval);
             if (isUpright)
             {
                 Vector3 randomOffset = new(
@@ -246,7 +375,9 @@ public class Pig : MonoBehaviour
                     0f,
                     Random.Range(-wanderRadius, wanderRadius)
                 );
-                if(beenKicked 
+
+                rawWanderTarget = wanderCenter + randomOffset;
+                if (beenKicked 
                     && pigType!=PigType.Boar 
                     && pigType != PigType.Cyboarg 
                     && pigType != PigType.Devil) 
@@ -254,24 +385,16 @@ public class Pig : MonoBehaviour
                     Vector3 awayFromPlayer = (transform.position - player.transform.position).normalized;
 
                     // VERY slight influence (tweak this)
-                    float avoidStrength = 0.3f;
+                    float avoidStrength = 0.35f;
 
                     randomOffset += awayFromPlayer * wanderRadius * avoidStrength;
                 }
                 wanderTarget = wanderCenter + randomOffset;
-                balanceCheckTime += Time.deltaTime;
-                float balanceCheckThreshold = 5f;
-                if(balanceCheckTime > balanceCheckThreshold)
-                {
-                    if(transform.position.x >= 60 || transform.position.x <= -60 || transform.position.z >= 70 || transform.position.z <= -70)
-                    {
-                        StartStandUpright();
-                    }
 
-                }
+                
             }
 
-            yield return new WaitForSeconds(wanderChangeInterval);
+            yield return new WaitForSeconds(nextWanderWait);
         }
     }
 
@@ -391,7 +514,7 @@ public class Pig : MonoBehaviour
     {
         // only draw in editor when pig is selected
         Gizmos.color = new Color(0f, 1f, 0f, 0.25f); // semi-transparent green
-        Gizmos.DrawSphere(transform.position, wanderRadius);
+        Gizmos.DrawSphere(wanderCenter, wanderRadius);
 
         // optional: draw a line to current target
         if (Application.isPlaying)
@@ -399,9 +522,26 @@ public class Pig : MonoBehaviour
             Gizmos.color = Color.yellow;
             Gizmos.DrawLine(transform.position, wanderTarget);
             Gizmos.DrawSphere(wanderTarget, 0.1f);
+
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawLine(transform.position, rawWanderTarget);
+            Gizmos.DrawWireSphere(rawWanderTarget, 0.1f);
         }
-        Gizmos.color = new Color(1f, 0f, 0f, 0.25f);
+        Gizmos.color = new Color(1f, 0f, 0f, 0.15f);
         if(combat)
             Gizmos.DrawSphere(transform.position, combat.cannibalRadius);
+
+        BoxCollider box = GetComponent<BoxCollider>();
+        if (box == null) return;
+
+        Vector3 localCenter = box.center + Vector3.forward * 0.05f;
+        Vector3 worldCenter = transform.TransformPoint(localCenter);
+
+        Vector3 size = box.size + new Vector3(0.1f, 0.1f, 0.3f);
+
+        Gizmos.color = Color.green;
+        Gizmos.matrix = Matrix4x4.TRS(worldCenter, transform.rotation, transform.lossyScale);
+        Gizmos.DrawWireCube(Vector3.zero, size);
+
     }
 }

@@ -136,7 +136,13 @@ public class Summoning : MonoBehaviour
         if (DEVIL.TryGetComponent<BoxCollider>(out BoxCollider box)) box.enabled = true;
 
         if (DEVIL.TryGetComponent<Pig>(out Pig pig)) pig.enabled = true;
-        
+        if(GameManager.instance.newGamePlus > 0)
+        {
+            int hpMod = (GameManager.instance.newGamePlus * 100);
+            pig.hp += hpMod;
+            pig.mhp += hpMod;
+        }
+
         if (DEVIL.TryGetComponent<PigCombat>(out PigCombat combat)) combat.enabled = true;
 
         if (DEVIL.TryGetComponent<Rigidbody>(out Rigidbody rb)) rb.useGravity = true;
@@ -177,7 +183,7 @@ public class Summoning : MonoBehaviour
     private IEnumerator LerpYPosition(Transform target, float startY, float endY, float duration)
     {
         float timer = 0f;
-        Vector3 pos = target.position;
+        Vector3 pos;
 
         while (timer < duration)
         {
@@ -224,7 +230,6 @@ public class Summoning : MonoBehaviour
 
     public void Endgame()
     {
-
         StartCoroutine(EndGameRoutine());
     }
 
@@ -354,6 +359,7 @@ public class Summoning : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         DEVIL.SetActive(false);
         isSummoning = false;
+        GameManager.instance.UpdateScore(100);
         yield return StartCoroutine(MainMenu.instance.FadeBlackout(0f, 1f));
         CreditsManager.instance.OpenCredits(true);
     }

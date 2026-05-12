@@ -82,11 +82,11 @@ MonoBehaviour:
   pigdust: {fileID: 5492206110454143899, guid: 7ecb1b0f9863d194a897d0fd9093c3ee, type: 3}
   wanderRadius: 7.4
   wanderChangeInterval: 2
-  kickForce: 8
+  kickForce: 8.2
   isUpright: 1
-  hp: 150
-  mhp: 150
-  baconPerKick: 12
+  hp: 160
+  mhp: 160
+  baconPerKick: 13
   wanderSpeed: 2.7
   pigType: 6
   carrotTag: Carrot

@@ -1,5 +1,6 @@
-using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine;
+using static UnityEditor.PlayerSettings;
 
 public class Suck : MonoBehaviour
 {
@@ -23,31 +24,9 @@ public class Suck : MonoBehaviour
     void FixedUpdate()
     {
         CleanupDestroyedReferences();
-
-        ApplyGlobalWeakPull();
         ApplyStrongRadiusPull();
     }
 
-    void ApplyGlobalWeakPull()
-    {
-        Rigidbody[] allBodies = FindObjectsByType<Rigidbody>(FindObjectsSortMode.None);
-
-        foreach (Rigidbody rb in allBodies)
-        {
-            if (rb == null) continue;
-            if (!IsInLayerMask(rb.gameObject.layer, baconLayer)) continue;
-
-            float distance = Vector3.Distance(rb.position, suckerPoint.position);
-
-            // only affect bacon OUTSIDE the radius
-            if (distance <= suckRadius) continue;
-
-            Vector3 dir = (suckerPoint.position - rb.position).normalized;
-
-            rb.AddForce(dir * globalPullStrength, ForceMode.Acceleration);
-            rb.linearVelocity = Vector3.ClampMagnitude(rb.linearVelocity, globalMaxPullSpeed);
-        }
-    }
 
     void ApplyStrongRadiusPull()
     {
@@ -60,8 +39,13 @@ public class Suck : MonoBehaviour
 
         for (int i = 0; i < count; i++)
         {
+            
+            
             Collider hit = hits[i];
             if (hit == null) continue;
+
+            if (!hit.TryGetComponent<AntiSuckTimer>(out AntiSuckTimer timer)) continue;
+            if (timer.age < 10f) continue;
 
             Rigidbody rb = hit.GetComponentInParent<Rigidbody>();
             if (rb == null) continue;

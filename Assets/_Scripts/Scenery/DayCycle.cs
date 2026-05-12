@@ -58,6 +58,7 @@ public class DayCycle : MonoBehaviour
                 isDay = !isDay;
                 if (isDay)
                 {
+                    GameManager.instance.UpdateScore(10);
                     StartCoroutine(LerpSkybox(skyboxNight, skyboxDay, 2f));
                     StartCoroutine(LerpLight(nightRotation, dayRotation, nightIntensity, dayIntensity, 2f));
                 }

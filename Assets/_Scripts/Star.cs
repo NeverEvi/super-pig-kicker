@@ -83,6 +83,7 @@ public class Star : MonoBehaviour
     {
         if (kicked) return;
         kicked = true;
+        GameManager.instance.UpdateScore(5);
         // apply knockback force
         if (rb != null && kicker != null)
         {
@@ -111,12 +112,10 @@ public class Star : MonoBehaviour
         popParticles.Play();
         yield return new WaitForSeconds(0.2f);
         int starBacon = Random.Range(1, 6);
-        int pops = 0;
-        while (pops < starBacon)
-        { 
-            Damage.instance.BaconDamage(1, transform.position, null, this);
-            pops++;
-        }
+
+        Damage.instance.BaconDamage(starBacon, transform.position, null, this);
+
+
         twinkleAudio.clip = popClip;
         twinkleAudio.volume = 0.8f;
         twinkleAudio.Play();

@@ -40,11 +40,15 @@ public class Damage : MonoBehaviour
             ////// MAX STACK DEFINITION //////
             int baseStack = 10 * PlayerKick.instance.kickStrength;
             int maxStack = baseStack;
-            if (ShopManager.instance.alienBought) maxStack += 10;
-            maxStack += (GameManager.instance.angelKills * 2);
+            if(star == null)
+            {
+                if (ShopManager.instance.alienBought) maxStack += 10;
+                maxStack += (GameManager.instance.angelKills * 2);
             
-            float scale = Mathf.Clamp(spill / 200000f, 1f, 10f);
-            maxStack = Mathf.RoundToInt(maxStack * scale);
+                float scale = Mathf.Clamp(spill / 200000f, 1f, 10f);
+                maxStack = Mathf.RoundToInt(maxStack * scale);
+            }
+            else maxStack = 1;
 
             int maxSpawns = 200;
             int estimatedSpawns = Mathf.CeilToInt((float)spill / maxStack);

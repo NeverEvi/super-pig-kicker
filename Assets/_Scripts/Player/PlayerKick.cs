@@ -6,6 +6,7 @@ public class PlayerKick : MonoBehaviour
     public static PlayerKick instance;
     public float kickRange = 1f;
     public float kickTime = 0.3f;
+    public float lastSuccessfulKickTime;
 
     public bool isKicking = false;
     private Vector3 startPos;
@@ -82,10 +83,15 @@ public class PlayerKick : MonoBehaviour
         if (pig != null) 
         {
             SpawnHitEffect(hitPoint);
-            pig.Kick(kickStrength, transform); 
+            pig.Kick(kickStrength, transform);
+            lastSuccessfulKickTime = Time.time;
         }
         if (crate != null) crate.Kick();
-        if (star != null) star.Kick(transform);
+        if (star != null) 
+        { 
+            star.Kick(transform);
+            lastSuccessfulKickTime = Time.time;
+        }
 
     }
     [SerializeField] GameObject hitEffect;

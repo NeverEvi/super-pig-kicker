@@ -159,6 +159,7 @@ public class ShopManager : MonoBehaviour
                         if (!goldenPigBought)
                         {
                             goldenPigBought = true;
+                            GameManager.instance.SPK += 0.01f;
                             Unlock(patchButton, "Carrot Patch");
                         }
                         break;
@@ -167,6 +168,7 @@ public class ShopManager : MonoBehaviour
                         if (!alienBought)
                         {
                             alienBought = true;
+                            GameManager.instance.SSK += 0.01f;
                             Unlock(techButton, "UFO Technology", false, true, UFO);
                             if(StarFall.instance != null && !StarFall.instance.enabled)
                             {
@@ -179,6 +181,7 @@ public class ShopManager : MonoBehaviour
                         if (!cyborgBought)
                         {
                             cyborgBought = true;
+                            GameManager.instance.SPK += 0.01f;
                             Unlock(goldPatchButton, "Gold Carrot Patch",false,true, goldPatch);
                             Unlock(CyboargButton, "CyBOARg");
                         }
@@ -208,6 +211,7 @@ public class ShopManager : MonoBehaviour
         {
             Unlock(AlienButton, "Alien Pigs", false, true, Dish);
             GameManager.instance.baconCount -= 800;
+            GameManager.instance.SPK += 0.01f;
             dishButton.GetComponent<Button>().interactable = false;
             dishCostText.text = "Satellite Dish: MAX";
             PlayBuySound();
@@ -256,6 +260,7 @@ public class ShopManager : MonoBehaviour
         {
             
             GameManager.instance.baconCount -= permitCost;
+            
             UpgradePermit();
             PlayBuySound();
             UpdateUI();
@@ -267,7 +272,9 @@ public class ShopManager : MonoBehaviour
     {
         GameManager.instance.pigsMax++;
 
-        permitCost = Mathf.RoundToInt(1.5f * permitCost);
+        permitCost = Mathf.RoundToInt(1.45f * permitCost);
+        GameManager.instance.SPK += 0.002f;
+        GameManager.instance.SSK += 0.001f;
         if (GameManager.instance.pigsMax >= 10)
         {
             permitCostText.text = "Pig Permit: MAX";
@@ -295,7 +302,7 @@ public class ShopManager : MonoBehaviour
     {
         PassiveBacon.instance.spawnInterval = Mathf.Max(2f, PassiveBacon.instance.spawnInterval - troughUpgradeAmount);
 
-        troughCost = Mathf.RoundToInt(1.8f*troughCost);
+        troughCost = Mathf.RoundToInt(1.3f*troughCost);
         if (PassiveBacon.instance.spawnInterval <= 2f && troughButton != null)
         {
             troughButton.interactable = false;
@@ -319,8 +326,9 @@ public class ShopManager : MonoBehaviour
     private void UpgradeKick()
     {
         PlayerKick.instance.kickStrength++;
-
-        kickCost = Mathf.RoundToInt(1.5f * kickCost);
+        GameManager.instance.SPK += 0.005f;
+        GameManager.instance.SSK += 0.002f;
+        kickCost = Mathf.RoundToInt(1.53f * kickCost);
         if (PlayerKick.instance.kickStrength>=20)
         {
             kickButton.interactable = false;
@@ -369,10 +377,13 @@ public class ShopManager : MonoBehaviour
 
         if (!gold)
         {
+            float progress = Mathf.InverseLerp(60f, 10f, CarrotPatches.instance.normalPatch.spawnInterval);
+            float multiplier = Mathf.Lerp(1.2f, 1.3f, progress);
+
             CarrotPatches.instance.normalPatch.spawnInterval =
                 Mathf.Max(10f, CarrotPatches.instance.normalPatch.spawnInterval - patchUpgradeAmount);
 
-            patchCost = Mathf.RoundToInt(1.8f * patchCost);
+            patchCost = Mathf.RoundToInt(multiplier * patchCost);
 
             if (CarrotPatches.instance.normalPatch.spawnInterval <= 10f && patchButton != null)
             {
@@ -381,10 +392,13 @@ public class ShopManager : MonoBehaviour
         }
         else
         {
+            float progress = Mathf.InverseLerp(60f, 10f, CarrotPatches.instance.goldPatch.spawnInterval);
+            float multiplier = Mathf.Lerp(1.22f, 1.45f, progress);
+
             CarrotPatches.instance.goldPatch.spawnInterval =
                 Mathf.Max(10f, CarrotPatches.instance.goldPatch.spawnInterval - goldPatchUpgradeAmount);
 
-            goldPatchCost = Mathf.RoundToInt(2.2f * goldPatchCost);
+            goldPatchCost = Mathf.RoundToInt(multiplier * goldPatchCost);
 
             if (CarrotPatches.instance.goldPatch.spawnInterval <= 10f && goldPatchButton != null)
             {

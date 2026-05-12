@@ -14,18 +14,24 @@ public class GameManager : MonoBehaviour
 
     public int pigsKicked = 0;
     public int angelKills = 0;
+    public float SSK = 0.05f;
+    public float SPK = 0.05f;
 
     public bool immune = false;
+    public int totalScore = 0;
 
+    public int newGamePlus = 0;
     public TextMeshProUGUI baconText;
     public TextMeshProUGUI pigKickedText;
     public TextMeshProUGUI pigCountText;
+    public TextMeshProUGUI ScoreText;
 
     void Awake() => instance = this;
 
     public void AddBacon(int amount)
     {
         baconCount += amount; baconTotal += amount;
+        UpdateScore(amount);
         baconText.text = "Bacon: " + baconCount;
     }
 
@@ -42,10 +48,16 @@ public class GameManager : MonoBehaviour
     public void UpdateKickedPigs()
     {
         pigsKicked++;
+        UpdateScore(1);
         pigKickedText.text = "Pigs Kicked: " + pigsKicked;
     }    
     public void UpdatePigCount()
     {
         pigCountText.text = "Pigs Owned: " + pigsCount + "/" + pigsMax;
     }   
+    public void UpdateScore(int points)
+    {
+        totalScore += points;
+        ScoreText.text = $"Score: {totalScore}";
+    }
 }
