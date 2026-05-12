@@ -78,7 +78,8 @@ MonoBehaviour:
   combat: {fileID: 0}
   pigdust: {fileID: 5492206110454143899, guid: 7ecb1b0f9863d194a897d0fd9093c3ee, type: 3}
   wanderRadius: 7.4
-  wanderChangeInterval: 2
+  minWanderChangeInterval: 2.5
+  maxWanderChangeInterval: 5
   kickForce: 6
   isUpright: 1
   SSK: {fileID: 0}
@@ -103,6 +104,8 @@ MonoBehaviour:
   textOffset: {x: 0, y: 1, z: 0}
   oinkSound: {fileID: 8300000, guid: 12d0d5fd68281bd4982c554a0a299911, type: 3}
   eatSound: {fileID: 8300000, guid: e41e2a2cf619732449326b5047e63c45, type: 3}
+  Crit1: {fileID: 8300000, guid: 4faac1c441f6ccc48b1ed8b3381a5a45, type: 3}
+  Crit2: {fileID: 8300000, guid: 28134594c8baebb4dadaa79ea08cff61, type: 3}
 --- !u!54 &1625209641238355269
 Rigidbody:
   m_ObjectHideFlags: 0

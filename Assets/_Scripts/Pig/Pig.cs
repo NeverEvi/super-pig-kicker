@@ -63,6 +63,8 @@ public class Pig : MonoBehaviour
     public AudioClip oinkSound; // assign a pig oink sound in inspector
     public AudioClip eatSound;
     private AudioSource audioSource;
+    public AudioClip Crit1;
+    public AudioClip Crit2;
 
     private Transform player;
 
@@ -133,8 +135,6 @@ public class Pig : MonoBehaviour
         }
         Damage.instance.BaconDamage(damage, Vector3.zero, this);
 
-        //float timeSinceKick = Time.time - PlayerKick.instance.lastSuccessfulKickTime;
-
         // apply knockback force
         if (rb != null && kicker != null)
         {
@@ -147,14 +147,16 @@ public class Pig : MonoBehaviour
             //Vector3 forceDir = ((transform.position - kicker.position) + Vector3.up * 2f).normalized;
             float SSK_Chance = Random.value;
             float SPK_Chance = Random.value;
+            int critSound = Random.Range(1, 3);
             if (SPK_Chance < GameManager.instance.SPK)
             {
-                Debug.Log($"SPK");
+                
+
+                AudioHelper.PlayClipAtPosition((critSound == 1) ? Crit1 : Crit2, transform.position, 1f, Random.Range(0.9f, 1.1f));
                 SPK.SetActive(true);
 
-                spinStrength = 2.2f;
-                totalKickForce += 2f;
-                upwardForce = 5f;
+                spinStrength = 2.2f; totalKickForce += 2f; upwardForce = 5f;
+                
                 int top = 1;
                 rb.maxAngularVelocity = 100f;
                 rb.angularVelocity = Random.onUnitSphere * 20f;
@@ -186,11 +188,12 @@ public class Pig : MonoBehaviour
                         break;
                 }
                 top += GameManager.instance.newGamePlus;
+
                 Damage.instance.BaconDamage(Random.Range(1,top+1), Vector3.zero, this);
             }
             else if (SSK_Chance < GameManager.instance.SSK)
             {
-                Debug.Log($"SSK");
+                AudioHelper.PlayClipAtPosition((critSound == 1) ? Crit1 : Crit2, transform.position, 1f, Random.Range(0.9f, 1.1f));
                 SSK.SetActive(true);
 
                 spinStrength = 90f;
@@ -201,13 +204,7 @@ public class Pig : MonoBehaviour
 
                 Damage.instance.BaconDamage(2, Vector3.zero, this);
             }
-            else 
-            { 
-                Debug.Log($"no SSK"); 
 
-            }
-            //rb.AddForce(forceDir * totalKickForce, ForceMode.Impulse);
-            //rb.AddTorque(Vector3.forward * spinStrength, ForceMode.Impulse);
             rb.AddForce(awayDir * totalKickForce, ForceMode.Impulse);
             rb.AddForce(Vector3.up * upwardForce, ForceMode.Impulse);
             rb.AddTorque(Random.insideUnitSphere * spinStrength, ForceMode.Impulse);

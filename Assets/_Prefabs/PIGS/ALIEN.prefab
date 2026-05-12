@@ -78,9 +78,12 @@ MonoBehaviour:
   combat: {fileID: 0}
   pigdust: {fileID: 5492206110454143899, guid: f499974d65d833c4fa0682b617099b90, type: 3}
   wanderRadius: 7.4
-  wanderChangeInterval: 2
+  minWanderChangeInterval: 2.5
+  maxWanderChangeInterval: 5
   kickForce: 7
   isUpright: 1
+  SSK: {fileID: 0}
+  SPK: {fileID: 0}
   hp: 65
   mhp: 65
   baconPerKick: 5
@@ -101,6 +104,8 @@ MonoBehaviour:
   textOffset: {x: 0, y: 1, z: 0}
   oinkSound: {fileID: 8300000, guid: e579e979426b89543956ce73c3bc00a8, type: 3}
   eatSound: {fileID: 8300000, guid: e41e2a2cf619732449326b5047e63c45, type: 3}
+  Crit1: {fileID: 8300000, guid: 4faac1c441f6ccc48b1ed8b3381a5a45, type: 3}
+  Crit2: {fileID: 8300000, guid: 28134594c8baebb4dadaa79ea08cff61, type: 3}
 --- !u!54 &1625209641238355269
 Rigidbody:
   m_ObjectHideFlags: 0
