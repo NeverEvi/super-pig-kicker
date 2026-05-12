@@ -84,7 +84,7 @@ public class Pulsate : MonoBehaviour
     {
         if (wait) 
         { 
-            yield return new WaitForSeconds(!scorePopup ? 12f : 0.55f);
+            yield return new WaitForSeconds(!scorePopup ? 12f : 0.45f);
             
         }
         if (scaling) yield break;
@@ -92,7 +92,7 @@ public class Pulsate : MonoBehaviour
 
         float t = 0f;
         Vector3 startScale = rect.localScale;
-        if (scorePopup) scaleTime = 0.45f;
+        if (scorePopup) scaleTime = 0.25f;
         while (t < scaleTime)
         {
             t += Time.deltaTime;
