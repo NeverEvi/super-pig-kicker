@@ -36,6 +36,9 @@ public class GameManagerSaveData
     public float SSK;
     public float SPK;
 
+    public int totalScore;
+    public int newGamePlus;
+
 }
 
 [Serializable]

@@ -259,7 +259,10 @@ public class MainMenu : MonoBehaviour
             angelKills = GameManager.instance.angelKills,
 
             SPK = GameManager.instance.SPK,
-            SSK = GameManager.instance.SSK
+            SSK = GameManager.instance.SSK,
+
+            totalScore = GameManager.instance.totalScore,
+            newGamePlus = GameManager.instance.newGamePlus
 
         };
 
@@ -317,6 +320,8 @@ public class MainMenu : MonoBehaviour
         GameManager.instance.SSK = data.SSK;
         GameManager.instance.SPK = data.SPK;
 
+        GameManager.instance.totalScore = data.totalScore;
+        GameManager.instance.newGamePlus = data.newGamePlus;
 
         GameManager.instance.UpdatePigCount();
         ShopManager.instance.UpdateUI();
