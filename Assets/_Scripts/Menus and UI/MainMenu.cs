@@ -256,7 +256,11 @@ public class MainMenu : MonoBehaviour
             baconTotal = GameManager.instance.baconTotal,
             pigsMax = GameManager.instance.pigsMax,
             kickedPigs = GameManager.instance.pigsKicked,
-            angelKills = GameManager.instance.angelKills
+            angelKills = GameManager.instance.angelKills,
+
+            SPK = GameManager.instance.SPK,
+            SSK = GameManager.instance.SSK
+
         };
 
         if (ShopManager.instance != null)
@@ -309,6 +313,10 @@ public class MainMenu : MonoBehaviour
         GameManager.instance.pigsMax = data.pigsMax;
         GameManager.instance.pigsKicked = data.kickedPigs;
         GameManager.instance.angelKills = data.angelKills;
+
+        GameManager.instance.SSK = data.SSK;
+        GameManager.instance.SPK = data.SPK;
+
 
         GameManager.instance.UpdatePigCount();
         ShopManager.instance.UpdateUI();

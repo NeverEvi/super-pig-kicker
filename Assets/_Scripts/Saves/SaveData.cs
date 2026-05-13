@@ -32,6 +32,10 @@ public class GameManagerSaveData
     public int pigsMax;
     public int kickedPigs;
     public int angelKills;
+
+    public float SSK;
+    public float SPK;
+
 }
 
 [Serializable]
