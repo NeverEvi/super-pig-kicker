@@ -275,7 +275,7 @@ public class ShopManager : MonoBehaviour
         permitCost = Mathf.RoundToInt(1.45f * permitCost);
         GameManager.instance.SPK += 0.002f;
         GameManager.instance.SSK += 0.001f;
-        if (GameManager.instance.pigsMax >= 10)
+        if (GameManager.instance.pigsMax >= (10+GameManager.instance.newGamePlus))
         {
             permitCostText.text = "Pig Permit: MAX";
             permitButton.interactable = false;

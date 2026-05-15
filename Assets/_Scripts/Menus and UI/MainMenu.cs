@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
@@ -48,18 +49,18 @@ public class MainMenu : MonoBehaviour
         pc = player.GetComponent<PlayerController>();
         crateInstance = Instantiate(cratePrefab, spawnpos, Quaternion.identity);
         crateInstance.SetActive(false);
+        if (NewGamePlus.startAfterReload)
+        {
+            NewGamePlus.startAfterReload = false;
+            StartCoroutine(NewGamePlusStartRoutine());
+        }
     }
 
+    #region NewGame
     public void NewGame()
     {
         if (isStarting) return;
         StartCoroutine(NewGameRoutine());
-    }
-
-    public void Continue()
-    {
-        if (isStarting) return;
-        StartCoroutine(ContinueRoutine());
     }
 
     private IEnumerator NewGameRoutine()
@@ -103,6 +104,14 @@ public class MainMenu : MonoBehaviour
         yield return StartCoroutine(EnableControls());
         isStarting = false;
         
+    }
+    #endregion
+
+    #region Continue
+    public void Continue()
+    {
+        if (isStarting) return;
+        StartCoroutine(ContinueRoutine());
     }
 
     private IEnumerator ContinueRoutine()
@@ -191,6 +200,85 @@ public class MainMenu : MonoBehaviour
         yield return StartCoroutine(EnableControls());
         isStarting = false;
     }
+    #endregion
+
+    #region NGP
+    public void StartNGP()
+    {
+        if (isStarting) return;
+        StartCoroutine(StartNGPRoutine());
+    }
+
+    private IEnumerator StartNGPRoutine()
+    {
+        isStarting = true;
+
+        // Fade to black
+        yield return StartCoroutine(FadeBlackout(0f, 1f));
+
+        // Store ONLY the carryover stuff before reloading
+        NewGamePlus.carryNewGamePlus = GameManager.instance.newGamePlus + 1;
+        NewGamePlus.startAfterReload = true;
+
+        // Delete the old run save so it becomes a clean new run
+        SaveSystem.DeleteSave();
+
+        // Reload this same scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private IEnumerator NewGamePlusStartRoutine()
+    {
+        isStarting = true;
+
+        // Start black because we just reloaded
+        SetBlackoutAlpha(1f);
+
+        StartGameplay();
+
+        pc.enabled = false;
+        pc.canMove = false;
+
+        player.transform.SetPositionAndRotation(
+            spawnPoint.transform.position,
+            new Quaternion(0f, -0.449043423f, 0f, 0.893509984f)
+        );
+
+        GameManager.instance.newGamePlus = NewGamePlus.carryNewGamePlus;
+
+        GameManager.instance.baconCount = 0;
+        GameManager.instance.pigsKicked = 0;
+        GameManager.instance.angelKills = 0;
+        GameManager.instance.pigsMax = 3;
+
+        BaconCounter.SetActive(true);
+        kickStrength.SetActive(true);
+        fps.SetActive(true);
+
+        mainmenu.SetActive(false);
+        title.SetActive(true);
+
+        ShopManager.instance.playing = true;
+
+        Rigidbody rb = crateInstance.GetComponent<Rigidbody>();
+        rb.isKinematic = true;
+
+        crateInstance.SetActive(true);
+        yield return null;
+        rb.isKinematic = false;
+
+        StartCoroutine(SpawnNGPlusPotatoes(GameManager.instance.newGamePlus));
+
+        yield return StartCoroutine(FadeBlackout(1f, 0f));
+
+        kickTutorial.SetActive(true);
+
+        yield return StartCoroutine(EnableControls());
+
+        isStarting = false;
+    }
+
+    #endregion
 
     public IEnumerator FadeBlackout(float startAlpha, float endAlpha)
     {

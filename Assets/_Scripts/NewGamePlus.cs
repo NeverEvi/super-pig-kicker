@@ -2,11 +2,8 @@ using UnityEngine;
 
 public class NewGamePlus : MonoBehaviour
 {
-    public static NewGamePlus instance;
+    public static bool startAfterReload = false;
 
-    private void Awake()
-    {
-        instance = this;
-    }
     
+    public static int carryNewGamePlus;
 }
