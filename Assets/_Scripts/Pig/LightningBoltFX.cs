@@ -35,8 +35,7 @@ public class LightningBoltFX : MonoBehaviour
 
             foreach (Renderer r in renderers)
             {
-                if (r != null)
-                    r.enabled = visible;
+                if (r != null) r.enabled = visible;
             }
 
             yield return new WaitForSeconds(flickerInterval);

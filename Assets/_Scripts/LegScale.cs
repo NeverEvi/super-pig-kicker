@@ -13,7 +13,7 @@ public class LegScale : MonoBehaviour
     IEnumerator YScaleLegs()
     {
         Vector3 startScale = transform.localScale;
-        Vector3 targetScale = new Vector3(startScale.x, 1f, startScale.z);
+        Vector3 targetScale = new (startScale.x, 1f, startScale.z);
 
         float timer = 0f;
         yield return new WaitForSeconds(0.2f);

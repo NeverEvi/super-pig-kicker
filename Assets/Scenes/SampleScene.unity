@@ -4173,11 +4173,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8097204176152261706, guid: e350897f3d1b6e04791ae97b3adb5ca5, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8266164887654252449, guid: e350897f3d1b6e04791ae97b3adb5ca5, type: 3}
       propertyPath: baconValue
-      value: 276000000
+      value: 2000000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4186,6 +4186,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8097204176152261706, guid: e350897f3d1b6e04791ae97b3adb5ca5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1854947318}
+    - targetCorrespondingSourceObject: {fileID: 5046044898008581015, guid: e350897f3d1b6e04791ae97b3adb5ca5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: e350897f3d1b6e04791ae97b3adb5ca5, type: 3}
 --- !u!4 &486490573 stripped
 Transform:
@@ -14875,7 +14878,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1065724521513895930, guid: 26cb3d376f30d5b4eb88bc80285d945e, type: 3}
       propertyPath: m_text
-      value: 'V0.99.50
+      value: 'V0.99.62
 
 '
       objectReference: {fileID: 0}

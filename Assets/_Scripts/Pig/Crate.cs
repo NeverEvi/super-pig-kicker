@@ -164,7 +164,8 @@ public class Crate : MonoBehaviour
     public void LoadFromSaveData(CrateSaveData data)
     {
         pigType = (PigType)data.pigType;
-        transform.position = new Vector3(data.posX, data.posY, data.posZ);
-        transform.rotation = new Quaternion(data.rotX, data.rotY, data.rotZ, data.rotW);
+        transform.SetPositionAndRotation(
+        new Vector3(data.posX, data.posY, data.posZ),
+        new Quaternion(data.rotX, data.rotY, data.rotZ, data.rotW));
     }
 }

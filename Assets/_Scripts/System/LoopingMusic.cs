@@ -4,18 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class LoopingMusic : MonoBehaviour
 {
-    public AudioClip introMusicClip;
-    public AudioClip musicClip; // assign your track in the inspector
-    public AudioClip bossMusicClip;
+    public AudioClip introMusicClip, musicClip, bossMusicClip;
 
     private AudioSource audioSource;
     public static LoopingMusic instance;
 
     private Coroutine fadeRoutine;
-    private void Awake()
-    {
-        instance = this;
-    }
+
+    private void Awake() => instance = this;
 
     void Start()
     {
@@ -51,8 +47,7 @@ public class LoopingMusic : MonoBehaviour
             return;
         }
 
-        if (fadeRoutine != null)
-            StopCoroutine(fadeRoutine);
+        if (fadeRoutine != null) StopCoroutine(fadeRoutine);
 
         fadeRoutine = StartCoroutine(FadeRoutine(targetClip, 1f));
     }

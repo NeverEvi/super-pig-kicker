@@ -8,7 +8,7 @@ public class Center : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        Gizmos.color = new Color(0.4f, 0.5f, 1f, 0.45f); // light blue, semi-transparent
+        Gizmos.color = new (0.4f, 0.5f, 1f, 0.45f); // light blue, semi-transparent
         Gizmos.DrawSphere(transform.position, radius);
     }
 }

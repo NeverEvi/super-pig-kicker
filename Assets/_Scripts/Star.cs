@@ -3,12 +3,10 @@ using UnityEngine;
 
 public class Star : MonoBehaviour
 {
-    public ParticleSystem streakParticles;
-    public ParticleSystem popParticles;
+    public ParticleSystem streakParticles, popParticles;
    
     public float streakSpeedThreshold = 0.15f;
-    private float jumpT = 0;
-    private float jumpTimer = 5f;
+    private float jumpT = 0, jumpTimer = 5f;
     private Rigidbody rb;
     private bool kicked = false;
     public AudioClip[] twinkleClips; // drag your 2 clips here
@@ -40,7 +38,7 @@ public class Star : MonoBehaviour
                 if (TryGetComponent<Rigidbody>(out Rigidbody rb))
                 {
                     // Slight jump
-                    Vector3 jump = new Vector3(
+                    Vector3 jump = new (
                         Random.Range(-0.5f, 0.5f),
                         Random.Range(0.5f, 0.8f),
                         Random.Range(-0.5f, 0.5f)
@@ -49,7 +47,7 @@ public class Star : MonoBehaviour
                     rb.AddForce(jump * Random.Range(0.5f, 0.7f), ForceMode.Impulse);
 
                     // Add spin
-                    Vector3 spin = new Vector3(
+                    Vector3 spin = new (
                         0f,
                         Random.Range(-2f, 2f),
                         Random.Range(-2f, 2f)

@@ -262,7 +262,7 @@ public class Summoning : MonoBehaviour
         Vector3 playerStartPos = player.transform.position;
         Vector3 playerEndPos = MainMenu.instance.spawnPoint.transform.position;
         Vector3 devilStartPos = DEVIL.transform.position;
-        Vector3 devilEndPos = new Vector3(-0.94f, 1f, 3.59f);//MainMenu.instance.devilStartPoint.transform.position;
+        Vector3 devilEndPos = new (-0.94f, 1f, 3.59f);//MainMenu.instance.devilStartPoint.transform.position;
 
         Quaternion playerStartRot = player.transform.rotation;
         Vector3 lookDir = devilEndPos - playerEndPos;

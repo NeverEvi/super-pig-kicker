@@ -25,7 +25,7 @@ public class Pig : MonoBehaviour
     public float kickForce = 5f; // how strongly the pig flies back
     
     public bool isUpright = true;
-    private float uprightDelay = 0.6f; // seconds to stand back up
+    private readonly float uprightDelay = 0.6f; // seconds to stand back up
     private Coroutine standUprightRoutine;
     public GameObject SSK;
     public GameObject SPK;
@@ -528,8 +528,7 @@ public class Pig : MonoBehaviour
         if(combat)
             Gizmos.DrawSphere(transform.position, combat.cannibalRadius);
 
-        BoxCollider box = GetComponent<BoxCollider>();
-        if (box == null) return;
+        if (!TryGetComponent<BoxCollider>(out BoxCollider box)) return;
 
         Vector3 localCenter = box.center + Vector3.forward * 0.05f;
         Vector3 worldCenter = transform.TransformPoint(localCenter);

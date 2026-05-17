@@ -6,10 +6,9 @@ public class StarFall : MonoBehaviour
     public float timer = 0f;
     private float spawnTime = 30f;
     public GameObject starPrefab;
-    private void Awake()
-    {
-        instance = this;
-    }
+    
+    private void Awake() => instance = this;
+
     void Update()
     {
         timer += Time.deltaTime;
@@ -22,7 +21,7 @@ public class StarFall : MonoBehaviour
             if (star.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
                 // Slight sideways nudge
-                Vector3 sideways = new Vector3(
+                Vector3 sideways = new (
                     Random.Range(-1f, 1f),
                     0f,
                     Random.Range(-1f, 1f)
@@ -31,7 +30,7 @@ public class StarFall : MonoBehaviour
                 rb.AddForce(sideways * Random.Range(0.5f, 2f), ForceMode.Impulse);
 
                 // Add spin
-                Vector3 spin = new Vector3(
+                Vector3 spin = new (
                     0f,
                     Random.Range(-2f, 2f),
                     Random.Range(-5f, 5f)

@@ -34,16 +34,13 @@ public class MainMenu : MonoBehaviour
     public GameObject potatoPrefab;
 
     public Vector3 spawnpos = new (1.05110359f, 10.8000002f, 2.64636302f);
-    private Vector3 potatopos = new Vector3(-3.89945507f, 12.56200004f, 10.1427422f);
+    private Vector3 potatopos = new (-3.89945507f, 15.56200004f, 10.1427422f);
     PlayerController pc;
     private bool isStarting = false;
     public AudioClip flip;
 
-    private void Awake()
-    {
-        instance = this;
-    }
-
+    private void Awake() => instance = this;
+    
     private void Start()
     {
         SetBlackoutAlpha(0);
@@ -113,11 +110,6 @@ public class MainMenu : MonoBehaviour
     public void Continue()
     {
         if (isStarting) return;
-        AudioHelper.PlayClipAtPosition(
-            flip,
-            transform.position,
-            0.5f,
-            Random.Range(0.9f, 1.1f));
         StartCoroutine(ContinueRoutine());
     }
 
@@ -462,9 +454,7 @@ public class MainMenu : MonoBehaviour
             GameObject potato =
             Instantiate(potatoPrefab, potatopos, Quaternion.identity);
 
-            Rigidbody rb = potato.GetComponent<Rigidbody>();
-
-            if (rb != null)
+            if(potato.TryGetComponent<Rigidbody>(out Rigidbody rb))
             {
                 rb.AddTorque(
                     Random.insideUnitSphere * 0.1f,
@@ -473,7 +463,7 @@ public class MainMenu : MonoBehaviour
             }
 
             spawned++;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.15f);
         }
     }
 

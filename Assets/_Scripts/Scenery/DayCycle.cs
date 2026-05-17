@@ -69,22 +69,19 @@ public class DayCycle : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            if (!bossColorLerped) 
-            { 
-                bossColorLerped = true;
-                StartBossLighting();
-            }
+        else if (!bossColorLerped) 
+        { 
+            bossColorLerped = true;
+            StartBossLighting();
         }
+        
 
     }
-    public void Flash() =>StartCoroutine(FlashRoutine());
+    public void Flash()  => StartCoroutine(FlashRoutine());
     public void Darken() => StartCoroutine(DarkenRoutine());
 
     public void StartBossLighting()
     {
-        Debug.Log($"StartBossLighting on {name} id={GetInstanceID()}");
         StopAllCoroutines();
 
         skyboxMaterial = RenderSettings.skybox;
@@ -93,15 +90,16 @@ public class DayCycle : MonoBehaviour
 
         StartCoroutine(StartBossLightingRoutine());
     }
+
     private IEnumerator StartBossLightingRoutine()
     {
-        Debug.Log("Boss Lighting Starting");
         StartCoroutine(LerpAmbient(RenderSettings.ambientLight, bossAmbientColor, 2f));
 
         if (!isDay) yield return StartCoroutine(LerpSkybox(skyboxNight, skyboxDay, 2f));
         
         yield return StartCoroutine(LerpSkyTint(GetSkyTint(), bossSkyTint, 2f));
     }
+
     public void EndBossLighting()
     {
         bossFight = false;
@@ -110,8 +108,7 @@ public class DayCycle : MonoBehaviour
     }
     private Color GetSkyTint()
     {
-        if (skyboxMaterial.HasProperty("_Tint1"))
-            return skyboxMaterial.GetColor("_Tint1");
+        if (skyboxMaterial.HasProperty("_Tint1")) return skyboxMaterial.GetColor("_Tint1");
 
         return Color.white;
     }
@@ -132,6 +129,7 @@ public class DayCycle : MonoBehaviour
 
         RenderSettings.ambientLight = end;
     }
+
     private IEnumerator LerpSkyTint(Color start, Color end, float time)
     {
         Debug.Log("Lerping Sky tint from " + start + " to " + end);
@@ -155,10 +153,7 @@ public class DayCycle : MonoBehaviour
             yield return null;
         }
 
-        if (skyboxMaterial.HasProperty("_Tint1"))
-        {
-            skyboxMaterial.SetColor("_Tint1", end);
-        }
+        if (skyboxMaterial.HasProperty("_Tint1")) skyboxMaterial.SetColor("_Tint1", end);
     }
     private IEnumerator LerpSkybox(Texture2D a, Texture2D b, float time)
     {
@@ -216,7 +211,6 @@ public class DayCycle : MonoBehaviour
         }
         MainLight.intensity = peakIntensity;
 
-        // Hold
         yield return new WaitForSeconds(holdTime);
 
         // Lerp back down
@@ -247,7 +241,6 @@ public class DayCycle : MonoBehaviour
         }
         MainLight.intensity = dimmedIntensity;
 
-        // Hold
         yield return new WaitForSeconds(holdTime); // total dimmed hold as requested
 
         // Lerp back up
