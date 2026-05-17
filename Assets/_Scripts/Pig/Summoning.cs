@@ -122,9 +122,7 @@ public class Summoning : MonoBehaviour
         yield return new WaitForSeconds(devilRiseDelay);
 
         DEVIL.SetActive(true);
-        //DayCycle.instance.StopAllCoroutines();
-        //DayCycle.instance.bossFight = true;
-        Debug.Log($"Summoning using DayCycle instance: {DayCycle.instance.name} id={DayCycle.instance.GetInstanceID()}");
+        //Debug.Log($"Summoning using DayCycle instance: {DayCycle.instance.name} id={DayCycle.instance.GetInstanceID()}");
         DayCycle.instance.StartBossLighting();
 
         Vector3 devilPos = DEVIL.transform.position;

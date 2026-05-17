@@ -119,8 +119,8 @@ public class Crate : MonoBehaviour
             // Push out, then snap back (ease)
             float strength = Mathf.Sin(t * Mathf.PI);
 
-            Vector3 horizontalOffset = dir * thumpStrength * strength;
-            Vector3 verticalOffset = Vector3.up * thumpUpward * strength;
+            Vector3 horizontalOffset = dir * (thumpStrength * strength);
+            Vector3 verticalOffset = Vector3.up * (thumpUpward * strength);
 
             transform.localPosition = basePos + horizontalOffset + verticalOffset;
 

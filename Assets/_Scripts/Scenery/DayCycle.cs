@@ -114,7 +114,7 @@ public class DayCycle : MonoBehaviour
     }
     private IEnumerator LerpAmbient(Color start, Color end, float time)
     {
-        Debug.Log("Lerping Ambient color from "+start+" to "+ end);
+        //Debug.Log("Lerping Ambient color from "+start+" to "+ end);
         
         float elapsed = 0f;
 
@@ -132,7 +132,7 @@ public class DayCycle : MonoBehaviour
 
     private IEnumerator LerpSkyTint(Color start, Color end, float time)
     {
-        Debug.Log("Lerping Sky tint from " + start + " to " + end);
+        //Debug.Log("Lerping Sky tint from " + start + " to " + end);
         float elapsed = 0f;
 
         while (elapsed < time)
@@ -157,7 +157,7 @@ public class DayCycle : MonoBehaviour
     }
     private IEnumerator LerpSkybox(Texture2D a, Texture2D b, float time)
     {
-        Debug.Log("Lerping Skybox from " + a + " to " + b);
+        //Debug.Log("Lerping Skybox from " + a + " to " + b);
         RenderSettings.skybox.SetTexture("_Texture1", a);
         RenderSettings.skybox.SetTexture("_Texture2", b);
         RenderSettings.skybox.SetFloat("_Blend", 0);

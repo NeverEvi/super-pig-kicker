@@ -14,7 +14,6 @@ public class ChargeHitbox : MonoBehaviour
 
         if (other.gameObject.layer == LayerMask.NameToLayer("BODY"))
         {
-            Debug.Log("Charge Hit");
             int currentBacon = GameManager.instance.baconCount;
 
             int loss = pig.pigType == PigType.Devil

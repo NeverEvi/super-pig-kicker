@@ -38,7 +38,7 @@ public class PassiveBacon : MonoBehaviour
                     Vector3.up * upForce + 
                     transform.forward * 1.1f + 
                     transform.right * side;
-                rb.AddForce(forceDir.normalized * throwForce * oomph, ForceMode.Impulse);
+                rb.AddForce(forceDir.normalized * (throwForce * oomph), ForceMode.Impulse);
             }
         }
     }

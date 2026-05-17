@@ -17,7 +17,7 @@ public class SuckerWander : MonoBehaviour
 
     void Update()
     {
-        transform.position += moveDir * moveSpeed * Time.deltaTime;
+        transform.position += moveDir * (moveSpeed * Time.deltaTime);
 
         if (moveDir != Vector3.zero)
         {

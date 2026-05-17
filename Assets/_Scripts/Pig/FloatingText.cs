@@ -19,7 +19,7 @@ public class FloatingText : MonoBehaviour
 
     void Update()
     {
-        transform.position += Vector3.up * floatSpeed * Time.deltaTime;
+        transform.position += Vector3.up * (floatSpeed * Time.deltaTime);
         timer += Time.deltaTime;
 
         // fade

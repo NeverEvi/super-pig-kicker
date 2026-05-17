@@ -384,7 +384,7 @@ public class Pig : MonoBehaviour
                     // VERY slight influence (tweak this)
                     float avoidStrength = 0.35f;
 
-                    randomOffset += awayFromPlayer * wanderRadius * avoidStrength;
+                    randomOffset += awayFromPlayer * (wanderRadius * avoidStrength);
                 }
                 wanderTarget = wanderCenter + randomOffset;
 

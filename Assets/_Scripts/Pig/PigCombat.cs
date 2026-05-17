@@ -31,6 +31,8 @@ public class PigCombat : MonoBehaviour
 
     [Header("Player Target")]
     Transform player;
+    private readonly Collider[] lightningHits = new Collider[24];
+    private readonly Collider[] cannibalHits = new Collider[24];
 
     void Awake()
     {
@@ -140,7 +142,6 @@ public class PigCombat : MonoBehaviour
 
         chargeHitbox.Activate();
 
-        Debug.Log("Instantiating Dash prefab");
         Vector3 offset = transform.up * 0.35f + transform.forward * 1.08f;
         Vector3 instantiatePos = (pig.pigType == PigType.Devil ? transform.position + offset : transform.position);
         currentDash = Instantiate(
@@ -273,26 +274,33 @@ public class PigCombat : MonoBehaviour
                 Instantiate(lightningPrefab, strikePos, Quaternion.identity);
             }
 
-            Collider[] hits = Physics.OverlapSphere(strikePos, 1.5f);
-            foreach (Collider hit in hits)
+            int hitCount = Physics.OverlapSphereNonAlloc(strikePos, 1.5f, lightningHits);
+
+            for (int h = 0; h < hitCount; h++)
             {
+                Collider hit = lightningHits[h];
+
                 if (hit.gameObject.layer == bodyLayer)
                 {
                     int loss = pig.pigType == PigType.Devil
                         ? Mathf.Max(200, GameManager.instance.baconCount / 10)
                         : Mathf.Max(50, GameManager.instance.baconCount / 20);
+
                     DamagePlayer(strikePos, loss);
+
                     PlayerController playerBody = hit.GetComponentInParent<PlayerController>();
+
                     if (playerBody != null)
                     {
-                        Vector3 knockDir = (hit.transform.position - strikePos);
+                        Vector3 knockDir = hit.transform.position - strikePos;
                         playerBody.ApplyKnockback(knockDir, 5f, 20f);
                     }
                     else
                     {
                         Debug.LogWarning("Lightning hit BODY collider but no PlayerController found in parent.");
                     }
-                    break; // only apply once
+
+                    break;
                 }
             }
             yield return new WaitForSeconds(0.12f);
@@ -313,28 +321,21 @@ public class PigCombat : MonoBehaviour
     #region BOSS SPECIALS
     IEnumerator CannibalHunger()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, cannibalRadius);
+        int hitCount = Physics.OverlapSphereNonAlloc(
+            transform.position,
+            cannibalRadius,
+            cannibalHits
+        );
 
-        foreach (Collider hit in hits)
+        for (int i = 0; i < hitCount; i++)
         {
+            Collider hit = cannibalHits[i];
+
             if (hit.CompareTag("Bacon"))
             {
                 StartCoroutine(SuckBacon(hit.gameObject));
             }
         }
-
-        // Chance to eat another pig
-        /*Pig[] pigs = FindObjectsByType<Pig>(FindObjectsSortMode.None);
-
-        foreach (Pig p in pigs)
-        {
-            if (p != this && Random.value < 0.3f)
-            {
-                //rewrite this
-                //pig.carrotTarget = p.transform; // reuse targeting system
-                break;
-            }
-        }*/
 
         yield return null;
     }
@@ -484,7 +485,7 @@ public class PigCombat : MonoBehaviour
         switch (attack)
         {
             case 0:
-                Debug.Log("Boss attack: Carrot Rain");
+                //Debug.Log("Boss attack: Carrot Rain");
                 routine = CarrotRain();
                 break;
 

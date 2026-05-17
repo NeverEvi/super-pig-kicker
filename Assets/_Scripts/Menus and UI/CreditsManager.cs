@@ -60,7 +60,7 @@ public class CreditsManager : MonoBehaviour
 
         while (rect.anchoredPosition.y < endY)
         {
-            rect.anchoredPosition += Vector2.up * speed * Time.unscaledDeltaTime;
+            rect.anchoredPosition += Vector2.up * (speed * Time.unscaledDeltaTime);
             yield return null;
         }
 
