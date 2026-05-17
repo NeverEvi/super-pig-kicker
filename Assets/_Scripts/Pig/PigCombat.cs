@@ -461,17 +461,17 @@ public class PigCombat : MonoBehaviour
     public IEnumerator BossAttackRoutine()
     {
         Debug.Log("BossAttackRoutine started");
-        //fastSpecial = 1f;
-        //slowSpecial = 1.5f;
         while (pig.hp > 0)
         {
             yield return new WaitForSeconds(Random.Range(fastSpecial, slowSpecial));
             int attack;
-            if (GameManager.instance.carrotCount <= 30)
-            {
-                attack = Random.Range(0, 4);
-            }
-            else attack = Random.Range(1, 4);
+            int low;
+            int high;
+            if (GameManager.instance.carrotCount <= 30) low = 0;
+            else low = 1;
+            if (pig.hp <= pig.mhp / 2) high = 4;
+            else high = 3;
+                attack = Random.Range(low, high);
             yield return StartCoroutine(RunAttackSafely(attack)); 
         }
 
@@ -494,13 +494,13 @@ public class PigCombat : MonoBehaviour
                 break;
 
             case 2:
-                Debug.Log("Boss attack: Cannibal Hunger");
-                routine = CannibalHunger();
+                Debug.Log("Boss attack: Charge");
+                routine = ChargeAttack();
                 break;
 
             case 3:
-                Debug.Log("Boss attack: Charge");
-                routine = ChargeAttack();
+                Debug.Log("Boss attack: Cannibal Hunger");
+                routine = CannibalHunger();
                 break;
         }
 
