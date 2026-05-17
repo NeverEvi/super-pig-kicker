@@ -37,7 +37,6 @@ public class SuckerWander : MonoBehaviour
     {
         if (IsInLayerMask(collision.gameObject.layer, bounceLayers))
         {
-            Debug.Log("Collision enter, changing");
             PickRandomDirection();
         }
     }

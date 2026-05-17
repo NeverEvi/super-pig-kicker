@@ -278,7 +278,6 @@ public class PigCombat : MonoBehaviour
             {
                 if (hit.gameObject.layer == bodyLayer)
                 {
-                    Debug.Log("HIT");
                     int loss = pig.pigType == PigType.Devil
                         ? Mathf.Max(200, GameManager.instance.baconCount / 10)
                         : Mathf.Max(50, GameManager.instance.baconCount / 20);
@@ -372,6 +371,7 @@ public class PigCombat : MonoBehaviour
         // Finalize
         if (bacon != null)
         {
+
             int healing = bacon.GetComponentInChildren<Bacon>().baconValue;
 
             pig.hp += healing;

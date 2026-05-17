@@ -9,16 +9,23 @@ public class Suck : MonoBehaviour
     public float pullStrength = 0.75f;
     public float maxPullSpeed = 2.5f;
 
-    [Header("Global Weak Pull")]
-    public float globalPullStrength = 0.03f;
-    public float globalMaxPullSpeed = 0.5f;
-
     public LayerMask baconLayer;
 
     public Vector3 suckedSize = new(0.1f, 0.1f, 0.1f);
 
     private Collider[] hits = new Collider[64];
     private Dictionary<Rigidbody, Vector3> originalScales = new();
+
+    public static readonly List<Suck> ActiveSuckers = new();
+
+    void OnEnable() => ActiveSuckers.Add(this);
+    void OnDisable() => ActiveSuckers.Remove(this);
+
+    public bool IsInsideSuckRadius(Vector3 position)
+    {
+        if (suckerPoint == null) return false;
+        return Vector3.Distance(position, suckerPoint.position) <= suckRadius;
+    }
 
     void FixedUpdate()
     {
@@ -57,12 +64,6 @@ public class Suck : MonoBehaviour
 
             if (distance < 0.1f) continue;
 
-            /*Vector3 dir = toPoint.normalized;
-
-            float distancePercent = 1f - Mathf.Clamp01(distance / suckRadius);
-            float strength = pullStrength * Mathf.Lerp(0.25f, 1f, distancePercent);
-
-            rb.AddForce(dir * strength, ForceMode.Acceleration);*/
             Vector3 dir = toPoint.normalized;
 
             float distancePercent = 1f - Mathf.Clamp01(distance / suckRadius);
@@ -88,7 +89,7 @@ public class Suck : MonoBehaviour
             }
 
             rb.AddForce(forceDir * strength, ForceMode.Acceleration);
-
+            if (rb.isKinematic) continue;
             rb.linearVelocity = Vector3.ClampMagnitude(rb.linearVelocity, maxPullSpeed);
             
                 float shrinkStart = 0.6f;
