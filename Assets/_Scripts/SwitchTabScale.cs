@@ -4,9 +4,16 @@ public class SwitchTabScale : MonoBehaviour
 {
     public GameObject tab1;
     public GameObject tab2;
+    public AudioClip flip;
 
     public void SwitchTab(int tabNumber)
     {
+        AudioHelper.PlayClipAtPosition(
+            flip,
+            transform.position,
+            0.5f,
+            Random.Range(0.9f, 1.1f));
+
         switch (tabNumber)
         {
             case 1:

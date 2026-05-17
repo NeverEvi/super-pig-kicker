@@ -37,6 +37,7 @@ public class MainMenu : MonoBehaviour
     private Vector3 potatopos = new Vector3(-3.89945507f, 12.56200004f, 10.1427422f);
     PlayerController pc;
     private bool isStarting = false;
+    public AudioClip flip;
 
     private void Awake()
     {
@@ -60,13 +61,14 @@ public class MainMenu : MonoBehaviour
     public void NewGame()
     {
         if (isStarting) return;
+        
         StartCoroutine(NewGameRoutine());
     }
 
     private IEnumerator NewGameRoutine()
     {
         isStarting = true;
-
+        
         yield return StartCoroutine(FadeBlackout(0f, 1f));
 
         SaveSystem.DeleteSave();
@@ -111,6 +113,11 @@ public class MainMenu : MonoBehaviour
     public void Continue()
     {
         if (isStarting) return;
+        AudioHelper.PlayClipAtPosition(
+            flip,
+            transform.position,
+            0.5f,
+            Random.Range(0.9f, 1.1f));
         StartCoroutine(ContinueRoutine());
     }
 
@@ -206,6 +213,7 @@ public class MainMenu : MonoBehaviour
     public void StartNGP()
     {
         if (isStarting) return;
+
         StartCoroutine(StartNGPRoutine());
     }
 
