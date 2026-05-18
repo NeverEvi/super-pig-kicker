@@ -34,6 +34,18 @@ MonoBehaviour:
     m_Localized: 'Pigs Owned: {0}/{1}'
     m_Metadata:
       m_Items: []
+  - m_Id: 35464103784448
+    m_Localized: '+Kick Strength: MAX'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34838963744768
+    m_Localized: '+Kick Strength: {0} bacon'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35508060090368
+    m_Localized: 'Kick Strength: {0}'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

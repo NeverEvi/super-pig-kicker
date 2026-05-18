@@ -31,6 +31,18 @@ MonoBehaviour:
     m_Key: pigs_owned
     m_Metadata:
       m_Items: []
+  - m_Id: 34838963744768
+    m_Key: upgrade_kick_cost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35464103784448
+    m_Key: upgrade_kick_max
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35508060090368
+    m_Key: kick_strength
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

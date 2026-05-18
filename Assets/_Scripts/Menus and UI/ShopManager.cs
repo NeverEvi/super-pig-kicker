@@ -488,11 +488,11 @@ public class ShopManager : MonoBehaviour
     {
         if(PlayerKick.instance.kickStrength >=20)
         {
-            kickCostText.text = $"+Kick Strength: MAX";
+            kickCostText.text = L("upgrade_kick_max");
             return;
         }
-        kickCostText.text = $"+Kick Strength: {kickCost} bacon";
-        kickUI.text = $"Kick Strength: {PlayerKick.instance.kickStrength}";
+        kickCostText.text = L("upgrade_kick_cost", kickCost);
+        kickUI.text = L("kick_strength", PlayerKick.instance.kickStrength);
     }
     private void UpdateTroughUI()
     {
