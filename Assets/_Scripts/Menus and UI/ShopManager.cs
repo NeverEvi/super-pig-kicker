@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization.Settings;
+using UnityEngine.Localization.Tables;
 
 public class ShopManager : MonoBehaviour
 {
@@ -474,12 +476,13 @@ public class ShopManager : MonoBehaviour
         UpdatePatchUI();
         UpdateKickUI();
         UpdateAmounts();
+        GameManager.instance.UpdateKickedPigs();
+        GameManager.instance.UpdatePigCount();
     }
     public void UpdateBaconUI()
     {
-        baconText.text = "Bacon: " + GameManager.instance.baconCount;
-        baconTotalText.text = "Total Bacon: " + GameManager.instance.baconTotal;
-
+        baconText.text = L("bacon_count", GameManager.instance.baconCount);
+        baconTotalText.text = L("bacon_total", GameManager.instance.baconTotal);
     }
     private void UpdateKickUI()
     {
@@ -670,4 +673,20 @@ public class ShopManager : MonoBehaviour
     }
 
     #endregion
+
+    public string L(string key, params object[] args)
+    {
+        var table = LocalizationSettings.StringDatabase.GetTable("shop");
+        if (table == null) return key;
+
+        var entry = table.GetEntry(key);
+        if (entry == null) return key;
+
+        string value = entry.GetLocalizedString();
+
+        if (args != null && args.Length > 0)
+            value = string.Format(value, args);
+
+        return value;
+    }
 }

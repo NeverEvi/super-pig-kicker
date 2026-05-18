@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: MenuTable_fr
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: fr
+  m_SharedData: {fileID: 11400000, guid: b19d8a54cbd7fd849b72826639decc46, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 3124040232960
+    m_Localized: Nouvelle Partie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3175311405056
+    m_Localized: Continuer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3203207720960
+    m_Localized: "Param\xE8tres"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3240813850624
+    m_Localized: Quitter
+    m_Metadata:
+      m_Items: []
+  - m_Id: 49309216768
+    m_Localized: Super Frappe-Cochon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20170610241536
+    m_Localized: Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20633866924032
+    m_Localized: "Sensibilit\xE9 des commandes"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20816453365760
+    m_Localized: Retour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23125967171584
+    m_Localized: Appuyez sur Q pour ouvrir la boutique !
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24521919623168
+    m_Localized: "Cr\xE9dits"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26988627554304
+    m_Localized: Un jeu par NeverEvi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31274027642880
+    m_Localized: 'Design, programmation, design UI et level design
+
+      par NeverEvi'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33341010014208
+    m_Localized: Ressources et outils
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34874967650304
+    m_Localized: Polices
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35059256979456
+    m_Localized: Musique et son
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35321195458560
+    m_Localized: 'Design sonore
+
+      par NeverEvi
+
+
+      The Calm Before The Kicking
+
+      Compositeur:
+      Tera Catallo
+
+      Musique fournie par: Resonera Studio LLC
+
+
+      Pig Kickin''
+
+      Compositeur:
+      NeverEvi
+
+
+      What The Sow Have Sown
+
+      Compositeur: NeverEvi'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37635419467776
+    m_Localized: "Remerciements sp\xE9ciaux \xE0 ma famille, mes amis et tous ceux
+      qui m'ont soutenu.\n\nMerci d'avoir jou\xE9 !"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43994567340032
+    m_Localized: Cochons
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44031171031040
+    m_Localized: Ferme et fermier
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

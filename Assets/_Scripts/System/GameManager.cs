@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     {
         baconCount += amount; baconTotal += amount;
         UpdateScore(amount);
-        baconText.text = "Bacon: " + baconCount;
+        ShopManager.instance.UpdateBaconUI();
     }
 
     public bool SpendBacon(int cost)
@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         if (baconCount >= cost)
         {
             baconCount -= cost;
-            baconText.text = "Bacon: " + baconCount;
+            ShopManager.instance.UpdateBaconUI();
             return true;
         }
         return false;
@@ -49,11 +49,11 @@ public class GameManager : MonoBehaviour
     {
         pigsKicked++;
         UpdateScore(1);
-        pigKickedText.text = "Pigs Kicked: " + pigsKicked;
+        pigKickedText.text = ShopManager.instance.L("pigs_kicked", pigsKicked);
     }    
     public void UpdatePigCount()
     {
-        pigCountText.text = "Pigs Owned: " + pigsCount + "/" + pigsMax;
+        pigCountText.text = ShopManager.instance.L("pigs_owned", pigsCount, pigsMax);
     }   
     public void UpdateScore(int points)
     {

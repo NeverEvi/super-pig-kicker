@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: MenuTable Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: MenuTable
+  m_TableCollectionNameGuidString: b19d8a54cbd7fd849b72826639decc46
+  m_Entries:
+  - m_Id: 49309216768
+    m_Key: Title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3124040232960
+    m_Key: NewGameBTN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3175311405056
+    m_Key: ContinueBTN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3203207720960
+    m_Key: SettingsBTN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3240813850624
+    m_Key: QuitBTN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20170610241536
+    m_Key: VolumeSlide
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20633866924032
+    m_Key: InputSlide
+    m_Metadata:
+      m_Items: []
+  - m_Id: 20816453365760
+    m_Key: BackBTN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23125967171584
+    m_Key: ShopTUT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 24521919623168
+    m_Key: CreditsBTN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 26988627554304
+    m_Key: GameByEvi
+    m_Metadata:
+      m_Items: []
+  - m_Id: 31274027642880
+    m_Key: EviBaseCredit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 33341010014208
+    m_Key: AssetsAndTools
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34874967650304
+    m_Key: Fonts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35059256979456
+    m_Key: MusicAndSound
+    m_Metadata:
+      m_Items: []
+  - m_Id: 35321195458560
+    m_Key: AudioCredits
+    m_Metadata:
+      m_Items: []
+  - m_Id: 37635419467776
+    m_Key: Thanks
+    m_Metadata:
+      m_Items: []
+  - m_Id: 43994567340032
+    m_Key: PigTabBTN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 44031171031040
+    m_Key: FarmTabBTN
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 3599527714206515419
+  references:
+    version: 2
+    RefIds:
+    - rid: 3599527714206515419
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1779122082591
