@@ -214,7 +214,7 @@ public class Pig : MonoBehaviour
         if (!beenKicked)
         {
             beenKicked = true;
-            GameManager.instance.UpdateKickedPigs();
+            GameManager.instance.UpdateKickedPigs(1);
         }
         if (hp <= 0)
         {
@@ -257,15 +257,15 @@ public class Pig : MonoBehaviour
             {
                 if(!devilButton.interactable)
                 {
-                    ShopManager.instance.Unlock(ShopManager.instance.DevilButton, "Devil Pig", true);
-                    ShopManager.instance.DevilCostText.text = "Devil Pig: 3000 bacon";
+                    ShopManager.instance.Unlock(ShopManager.instance.DevilButton, ShopManager.instance.L("devil"), true);
+                    ShopManager.instance.DevilCostText.text = ShopManager.instance.L("devil");
                 }
             }
             else
             {
                 ShopManager.instance.Unlock(ShopManager.instance.DevilButton, "", false, false);
                 devilButton.interactable = false;
-                ShopManager.instance.DevilCostText.text = "Devil Pig: (" + GameManager.instance.angelKills + "/3 angels killed)";
+                ShopManager.instance.DevilCostText.text = ShopManager.instance.L("unlock_devil_progress", GameManager.instance.angelKills);
             }
         }
         if (pigType != PigType.Devil)

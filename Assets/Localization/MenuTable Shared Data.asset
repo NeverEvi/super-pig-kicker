@@ -91,6 +91,22 @@ MonoBehaviour:
     m_Key: FarmTabBTN
     m_Metadata:
       m_Items: []
+  - m_Id: 4745450700599296
+    m_Key: super_spin_kick
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4745947457187840
+    m_Key: super_pig_kick
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4746446327705600
+    m_Key: kickTUT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4747245288091648
+    m_Key: score
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

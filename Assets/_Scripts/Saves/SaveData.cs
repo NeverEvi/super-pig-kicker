@@ -47,6 +47,7 @@ public class ShopSaveData
     public bool goldenPigBought;
     public bool alienBought;
     public bool cyborgBought;
+    public bool hasDish;
     public bool hasTech;
     public bool suckoBought;
 

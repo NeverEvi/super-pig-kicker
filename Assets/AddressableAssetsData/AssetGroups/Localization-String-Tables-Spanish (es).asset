@@ -15,11 +15,25 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Spanish (es)
   m_GUID: b695bfea4d191e34ab3be882598a0f1d
   m_SerializeEntries:
+  - m_GUID: 6486c9db33dd8d74292873e0c5c578fe
+    m_Address: unlocks_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: adccb82a52fbf8446a8790304bf4073f
     m_Address: MenuTable_es
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-es
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc6201765c5c0234f945841f75e9892a
+    m_Address: shop_pigs_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d1aab2154ce432a4ca3c09f53f869f61
     m_Address: shop_es

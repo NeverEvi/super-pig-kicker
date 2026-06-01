@@ -46,6 +46,58 @@ MonoBehaviour:
     m_Localized: 'Fuerza de patada: {0}'
     m_Metadata:
       m_Items: []
+  - m_Id: 4316784661295104
+    m_Localized: '+Comedero: {0} tocino'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4317340284940288
+    m_Localized: '+Comedero: MAX'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4318646378622976
+    m_Localized: '+Huerto: {0} tocino'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4318858681708544
+    m_Localized: '+Huerto: MAX'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4319394709565440
+    m_Localized: '+Huerto dorado: {0} tocino'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4319439496343552
+    m_Localized: '+Huerto dorado: MAX'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4320097691693056
+    m_Localized: 'Permiso para cerdos: {0} tocino'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4320596990029824
+    m_Localized: 'Permiso para cerdos: MAX'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4321531929751552
+    m_Localized: 'Suck-O 3000: 1200 tocino'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4394766901899264
+    m_Localized: 'Antena satelital: 800 tocino'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4395203008851968
+    m_Localized: 'Antena satelital: MAX'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4439531999653888
+    m_Localized: 'Desmantelar nave: 2000 tocino'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4439535111827456
+    m_Localized: 'Desmantelar nave: MAX'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

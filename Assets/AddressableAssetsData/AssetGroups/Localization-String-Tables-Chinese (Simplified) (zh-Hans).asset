@@ -22,11 +22,25 @@ MonoBehaviour:
     - Locale-zh-Hans
     - Preload
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ed54eb76a27d954380888d234362d99
+    m_Address: shop_pigs_zh-Hans
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-Hans
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a9d272d902e3bf74cae7698921f64fa7
+    m_Address: unlocks_zh-Hans
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-zh-Hans
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c24dbdd77725e4c429a845e30c2e7fa1
     m_Address: MenuTable_zh-Hans
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-zh-Hans
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 750e61c41fdbdf0428800632b67129a9, type: 2}

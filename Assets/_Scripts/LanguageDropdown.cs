@@ -23,6 +23,9 @@ public class LanguageDropdown : MonoBehaviour
 
     private IEnumerator Start()
     {
+        //PlayerPrefs.DeleteKey("language");
+        //PlayerPrefs.Save();
+
         yield return LocalizationSettings.InitializationOperation;
 
         dropdown.ClearOptions();
@@ -45,17 +48,27 @@ public class LanguageDropdown : MonoBehaviour
 
         if (!string.IsNullOrEmpty(savedCode))
         {
+
+            Debug.Log("Saved language: " + savedCode);
             index = localeCodes.IndexOf(savedCode);
             if (index < 0) index = 0;
+            var savedLocale = LocalizationSettings.AvailableLocales.Locales
+                .FirstOrDefault(l => l.Identifier.Code == savedCode);
+
+            if (savedLocale != null)
+                LocalizationSettings.SelectedLocale = savedLocale;
+            ShopManager.instance?.UpdateUI();
         }
         else
         {
             string currentCode = LocalizationSettings.SelectedLocale.Identifier.Code;
+            Debug.Log("Detected language: " + currentCode);
             index = localeCodes.IndexOf(currentCode);
             if (index < 0) index = 0;
         }
 
         dropdown.SetValueWithoutNotify(index);
+        dropdown.RefreshShownValue();
 
         dropdown.onValueChanged.AddListener(SetLanguage);
     }
@@ -66,18 +79,6 @@ public class LanguageDropdown : MonoBehaviour
 
         string code = localeCodes[index];
 
-        var locale = LocalizationSettings.AvailableLocales.Locales
-            .FirstOrDefault(l => l.Identifier.Code == code);
-
-        if (locale == null)
-        {
-            Debug.LogWarning($"Locale not found: {code}");
-            return;
-        }
-
-        LocalizationSettings.SelectedLocale = locale;
-        PlayerPrefs.SetString("language", code);
-        PlayerPrefs.Save();
-        ShopManager.instance.UpdateUI();
+        LocalizationManager.instance.SetLanguage(code);
     }
 }

@@ -43,6 +43,58 @@ MonoBehaviour:
     m_Key: kick_strength
     m_Metadata:
       m_Items: []
+  - m_Id: 4316784661295104
+    m_Key: trough_cost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4317340284940288
+    m_Key: trough_cost_max
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4318646378622976
+    m_Key: patch_cost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4318858681708544
+    m_Key: patch_cost_max
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4319394709565440
+    m_Key: goldpatch_cost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4319439496343552
+    m_Key: goldpatch_cost_max
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4320097691693056
+    m_Key: pig_permit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4320596990029824
+    m_Key: pig_permit_max
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4321531929751552
+    m_Key: sucko
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4394766901899264
+    m_Key: satellite_dish
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4395203008851968
+    m_Key: satellite_dish_max
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4439531999653888
+    m_Key: disassemble
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4439535111827456
+    m_Key: disassemble_max
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

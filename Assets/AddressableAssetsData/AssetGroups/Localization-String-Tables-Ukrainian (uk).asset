@@ -15,6 +15,19 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Ukrainian (uk)
   m_GUID: baa225b9931d8fd40b48615e432d8751
   m_SerializeEntries:
+  - m_GUID: 4dbfb8d3c52e63542ae5aa1ee21bbe29
+    m_Address: unlocks_uk
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-uk
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 558a7edc69a78ec42a5bc0f9ecd5fdd3
+    m_Address: shop_pigs_uk
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-uk
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: c94d9b923b69dea4a85b8066cf87f1ce
     m_Address: shop_uk
     m_ReadOnly: 1
@@ -27,6 +40,7 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-uk
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 750e61c41fdbdf0428800632b67129a9, type: 2}

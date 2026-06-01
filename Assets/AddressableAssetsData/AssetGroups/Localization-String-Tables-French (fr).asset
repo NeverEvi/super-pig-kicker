@@ -15,14 +15,28 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-French (fr)
   m_GUID: d06db2caaed7d284b9d6a7950d3b3a84
   m_SerializeEntries:
+  - m_GUID: 2ada4d9896e771f4a9ec671f53a92e5a
+    m_Address: unlocks_fr
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fr
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 419924bda3f4898408aa37fb2c305573
     m_Address: MenuTable_fr
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-fr
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4e97396c5bfed1441ad4ba80d209f73d
     m_Address: shop_fr
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-fr
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f64f9125358199b47879f73bab438506
+    m_Address: shop_pigs_fr
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-fr

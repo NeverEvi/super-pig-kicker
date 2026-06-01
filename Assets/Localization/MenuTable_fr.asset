@@ -118,6 +118,22 @@ MonoBehaviour:
     m_Localized: Ferme et fermier
     m_Metadata:
       m_Items: []
+  - m_Id: 4745450700599296
+    m_Localized: SUPER COUP DE PIED TOURNOYANT !!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4745947457187840
+    m_Localized: SUPER COUP DE PIED PORCIN !!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4746446327705600
+    m_Localized: Appuyez sur Espace pour donner un coup de pied !
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4747245288091648
+    m_Localized: 'Score : {0}'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

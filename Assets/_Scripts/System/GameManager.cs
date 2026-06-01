@@ -45,19 +45,19 @@ public class GameManager : MonoBehaviour
         }
         return false;
     }
-    public void UpdateKickedPigs()
+    public void UpdateKickedPigs(int number=0)
     {
-        pigsKicked++;
-        UpdateScore(1);
+        pigsKicked+=number;
+        UpdateScore(number);
         pigKickedText.text = ShopManager.instance.L("pigs_kicked", pigsKicked);
     }    
     public void UpdatePigCount()
     {
         pigCountText.text = ShopManager.instance.L("pigs_owned", pigsCount, pigsMax);
-    }   
+    }
     public void UpdateScore(int points)
     {
         totalScore += points;
-        ScoreText.text = $"Score: {totalScore}";
+        ScoreText.text = ShopManager.instance.L("score", totalScore);
     }
 }

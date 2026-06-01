@@ -46,6 +46,58 @@ MonoBehaviour:
     m_Localized: 'Kick Strength: {0}'
     m_Metadata:
       m_Items: []
+  - m_Id: 4316784661295104
+    m_Localized: '+Trough: {0} bacon'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4317340284940288
+    m_Localized: '+Trough: MAX'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4318646378622976
+    m_Localized: '+Patch: {0} bacon'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4318858681708544
+    m_Localized: '+Patch: MAX'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4319394709565440
+    m_Localized: '+Gold Patch: {0} bacon'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4319439496343552
+    m_Localized: '+Gold Patch: MAX'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4320097691693056
+    m_Localized: 'Pig Permit: {0} bacon'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4320596990029824
+    m_Localized: 'Pig Permit: MAX'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4321531929751552
+    m_Localized: 'Suck-O 3000: 1200 Bacon'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4394766901899264
+    m_Localized: 'Satellite Dish: 800 Bacon'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4395203008851968
+    m_Localized: 'Satellite Dish: MAX'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4439531999653888
+    m_Localized: 'Disassemble Ship: 2000 Bacon'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4439535111827456
+    m_Localized: 'Disassemble Ship: MAX'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

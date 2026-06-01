@@ -18,6 +18,8 @@ public class MainMenu : MonoBehaviour
     public GameObject kickTutorial;
     public Image blackout;
     private GameObject crateInstance;
+    public GameObject SettingsMenu;
+    public GameObject LOAD;
 
     [Header("Fade")]
     public float fadeDuration = 0.75f;
@@ -43,10 +45,12 @@ public class MainMenu : MonoBehaviour
     
     private void Start()
     {
-        SetBlackoutAlpha(0);
+        SetBlackoutAlpha(1);
+        StartCoroutine(FadeBlackout(1f, 0f,2f,0.8f));
+
         pc = player.GetComponent<PlayerController>();
         crateInstance = Instantiate(cratePrefab, spawnpos, Quaternion.identity);
-        crateInstance.SetActive(false);
+        crateInstance.SetActive(false);;
         if (NewGamePlus.startAfterReload)
         {
             NewGamePlus.startAfterReload = false;
@@ -66,7 +70,7 @@ public class MainMenu : MonoBehaviour
     {
         isStarting = true;
         
-        yield return StartCoroutine(FadeBlackout(0f, 1f));
+        yield return StartCoroutine(FadeBlackout(0f, 1f, fadeDuration));
 
         SaveSystem.DeleteSave();
 
@@ -97,7 +101,7 @@ public class MainMenu : MonoBehaviour
         yield return null;
         rb.isKinematic = false;
 
-        yield return StartCoroutine(FadeBlackout(1f, 0f));
+        yield return StartCoroutine(FadeBlackout(1f, 0f, fadeDuration));
         
         kickTutorial.SetActive(true);
         yield return StartCoroutine(EnableControls());
@@ -118,7 +122,7 @@ public class MainMenu : MonoBehaviour
         Debug.Log("Continue routine start");
         isStarting = true;
 
-        yield return StartCoroutine(FadeBlackout(0f, 1f));
+        yield return StartCoroutine(FadeBlackout(0f, 1f, fadeDuration));
 
         SaveData data = SaveSystem.LoadGame();
         if (data == null)
@@ -194,7 +198,7 @@ public class MainMenu : MonoBehaviour
             if(pigObj.TryGetComponent<Pig>(out Pig pig)) pig.LoadFromSaveData(pigData);
         }
 
-        yield return StartCoroutine(FadeBlackout(1f, 0f));
+        yield return StartCoroutine(FadeBlackout(1f, 0f, fadeDuration));
 
         yield return StartCoroutine(EnableControls());
         isStarting = false;
@@ -214,7 +218,7 @@ public class MainMenu : MonoBehaviour
         isStarting = true;
 
         // Fade to black
-        yield return StartCoroutine(FadeBlackout(0f, 1f));
+        yield return StartCoroutine(FadeBlackout(0f, 1f, fadeDuration));
 
         // Store ONLY the carryover stuff before reloading
         NewGamePlus.carryNewGamePlus = GameManager.instance.newGamePlus + 1;
@@ -269,7 +273,7 @@ public class MainMenu : MonoBehaviour
 
         StartCoroutine(SpawnNGPlusPotatoes(GameManager.instance.newGamePlus));
 
-        yield return StartCoroutine(FadeBlackout(1f, 0f));
+        yield return StartCoroutine(FadeBlackout(1f, 0f, fadeDuration));
 
         kickTutorial.SetActive(true);
 
@@ -280,15 +284,17 @@ public class MainMenu : MonoBehaviour
 
     #endregion
 
-    public IEnumerator FadeBlackout(float startAlpha, float endAlpha)
+    public IEnumerator FadeBlackout(float startAlpha, float endAlpha, float time, float delay = 0f)
     {
+        if(delay != 0f) yield return new WaitForSeconds(delay);
+        if(LOAD.activeSelf) LOAD.SetActive(false); 
         float timer = 0f;
         Color c = blackout.color;
 
-        while (timer < fadeDuration)
+        while (timer < time)
         {
             timer += Time.deltaTime;
-            float t = timer / fadeDuration;
+            float t = timer / time;
 
             c.a = Mathf.Lerp(startAlpha, endAlpha, t);
             blackout.color = c;

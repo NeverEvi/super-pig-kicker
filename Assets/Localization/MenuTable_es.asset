@@ -98,6 +98,22 @@ MonoBehaviour:
     m_Localized: Granja y Granjero
     m_Metadata:
       m_Items: []
+  - m_Id: 4745450700599296
+    m_Localized: "\xA1SUPER PATADA GIRATORIA!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4745947457187840
+    m_Localized: "\xA1SUPER PATADA PORCINA!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4746446327705600
+    m_Localized: "\xA1Pulsa Espacio para patear!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4747245288091648
+    m_Localized: "Puntuaci\xF3n: {0}"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

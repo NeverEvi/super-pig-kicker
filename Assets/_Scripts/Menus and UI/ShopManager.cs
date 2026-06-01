@@ -40,11 +40,15 @@ public class ShopManager : MonoBehaviour
     readonly private float goldPatchUpgradeAmount = 1f;
 
     [Header("Tech Tree")]
+    //Satellite Dish
     public GameObject Dish;
     public Button dishButton;
     public TextMeshProUGUI dishCostText;
+    public bool hasDish = false;
+
     public GameObject AlienButton;
     public bool alienBought = false;
+
     public GameObject UFO;
     public GameObject techButton;
     public TextMeshProUGUI techCostText;
@@ -64,8 +68,10 @@ public class ShopManager : MonoBehaviour
     [Header("Panels")]
     public GameObject shopPanel;
     public GameObject escPanel;
+    public GameObject SettingsPanel2;
     public bool isOpen = false;
     public bool isEsc = false;
+    public bool isSettings = false;
 
     [Header("Kick Upgrade")]
     public Button kickButton;
@@ -94,6 +100,7 @@ public class ShopManager : MonoBehaviour
     void Awake() => instance = this;
     void Start()
     {
+        
         shopPanel.SetActive(false);
         UpdateUI();
     }
@@ -107,8 +114,12 @@ public class ShopManager : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                if (isOpen) ToggleShop();
-                else ToggleEsc();
+                if (isOpen) ToggleShop(); //if the shop is open, shut it
+                else
+                {
+                    if(isSettings) ToggleSettings(); //or if the settings menu is open, shut it
+                    else ToggleEsc(); //or toggle the escape menu
+                }
             }
         }
     }
@@ -117,8 +128,11 @@ public class ShopManager : MonoBehaviour
     {
         if (!setInteractable) button.SetActive(true);
         else button.GetComponent<Button>().interactable = true;
-        if (secondary != null) secondary.SetActive(true); 
-        if (displayPopup) PopupManager.instance.DisplayPopup(button.GetComponent<Image>().sprite, $"Unlocked {unlockName}");
+        if (secondary != null) secondary.SetActive(true);
+        if (displayPopup) {
+            Debug.Log("unlockName = " + unlockName);
+            Debug.Log("popupText = " + L("unlock", unlockName));
+            PopupManager.instance.DisplayPopup(button.GetComponent<Image>().sprite, L("unlock", unlockName)); }
     }
 
     public void BuyItem(int cost)
@@ -162,7 +176,7 @@ public class ShopManager : MonoBehaviour
                         {
                             goldenPigBought = true;
                             GameManager.instance.SPK += 0.01f;
-                            Unlock(patchButton, "Carrot Patch");
+                            Unlock(patchButton, L("unlock_patch"));
                         }
                         break;
                     case "ALIEN":
@@ -171,7 +185,7 @@ public class ShopManager : MonoBehaviour
                         {
                             alienBought = true;
                             GameManager.instance.SSK += 0.01f;
-                            Unlock(techButton, "UFO Technology", false, true, UFO);
+                            Unlock(techButton, L("unlock_UFO"), false, true, UFO);
                             if(StarFall.instance != null && !StarFall.instance.enabled)
                             {
                                 StarFall.instance.enabled = true;
@@ -184,7 +198,7 @@ public class ShopManager : MonoBehaviour
                         {
                             cyborgBought = true;
                             GameManager.instance.SPK += 0.01f;
-                            Unlock(goldPatchButton, "Gold Carrot Patch",false,true, goldPatch);
+                            Unlock(goldPatchButton, L("unlock_goldpatch"),false,true, goldPatch);
                             Unlock(CyboargButton, "CyBOARg");
                         }
                         break;
@@ -209,13 +223,12 @@ public class ShopManager : MonoBehaviour
     #region TECH
     public void BuyDish() //Buy the Satellite dish to unlock Aliens
     {
-        if (GameManager.instance.baconCount >= 800 && Dish.activeSelf == false)
+        if (GameManager.instance.baconCount >= 800 && hasDish == false)
         {
-            Unlock(AlienButton, "Alien Pigs", false, true, Dish);
+            hasDish = true;
+            Unlock(AlienButton, L("unlock_alien"), false, true, Dish);
             GameManager.instance.baconCount -= 800;
             GameManager.instance.SPK += 0.01f;
-            dishButton.GetComponent<Button>().interactable = false;
-            dishCostText.text = "Satellite Dish: MAX";
             PlayBuySound();
             UpdateUI();
         }
@@ -226,10 +239,8 @@ public class ShopManager : MonoBehaviour
         if (GameManager.instance.baconCount >= 2000 && hasTech == false)
         {
             hasTech = true;
-            Unlock(CyborgButton, "Cyborg Pigs");
+            Unlock(CyborgButton, L("unlock_cyborg"));
             GameManager.instance.baconCount -= 2000;
-            techButton.GetComponent<Button>().interactable = false;
-            techCostText.text = "Disassemble Ship: MAX";
             UFO.SetActive(false);
             PlayBuySound();
             UpdateUI();
@@ -245,7 +256,6 @@ public class ShopManager : MonoBehaviour
             Sucko.SetActive(true);
             suckoBought = true;
             suckoButton.GetComponent<Button>().interactable = false;
-            suckoCostText.text = "Suck-o 3000: MAX";
             PlayBuySound();
             UpdateUI();
         }
@@ -274,16 +284,9 @@ public class ShopManager : MonoBehaviour
     {
         GameManager.instance.pigsMax++;
 
-        permitCost = Mathf.RoundToInt(1.45f * permitCost);
+        permitCost = Mathf.RoundToInt(1.3f * permitCost);
         GameManager.instance.SPK += 0.002f;
         GameManager.instance.SSK += 0.001f;
-        if (GameManager.instance.pigsMax >= (10+GameManager.instance.newGamePlus))
-        {
-            permitCostText.text = "Pig Permit: MAX";
-            permitButton.interactable = false;
-        }
-        else
-            permitCostText.text = "Pig Permit: " + permitCost + " bacon";
     }
     #endregion
 
@@ -332,16 +335,11 @@ public class ShopManager : MonoBehaviour
         GameManager.instance.SSK += 0.002f;
         kickCost = Mathf.RoundToInt(1.53f * kickCost);
         if (PlayerKick.instance.kickStrength>=20)
-        {
             kickButton.interactable = false;
-        }
     }
-
     #endregion
 
     #region CARROTS AND PATCHES
-
-
     public void BuyPatch(bool gold = false)
     {
         if (CarrotPatches.instance == null) { PlayFailSound();return; }
@@ -437,12 +435,18 @@ public class ShopManager : MonoBehaviour
         if (!isEsc) CreditsManager.instance.CloseCredits();
         UpdatePauseAndCursor();
     }
+    public void ToggleSettings()
+    {
+        isSettings = !isSettings;
+        SettingsPanel2.SetActive(isSettings);
+        escPanel.SetActive(isEsc && !isSettings);
+    }
     public void ToggleShop()
     {
         if (!isOpen && Summoning.instance.isSummoning) return;
         isOpen = !isOpen;
         shopPanel.SetActive(isOpen);
-        if (!AngelButton.activeSelf && GameManager.instance.baconTotal >= 25000) Unlock(AngelButton, "Angel Pig");
+        if (!AngelButton.activeSelf && GameManager.instance.baconTotal >= 25000) Unlock(AngelButton, L("unlock_angel"));
         UpdateUI();
         UpdatePauseAndCursor();
     }
@@ -472,14 +476,51 @@ public class ShopManager : MonoBehaviour
     public void UpdateUI()
     {
         UpdateBaconUI();
-        UpdateTroughUI();
-        UpdatePatchUI();
-        UpdateKickUI();
+        UpdateTroughUI(); UpdatePatchUI(); UpdateKickUI();
         UpdateAmounts();
+        UpdateSuckoUI(); UpdatePermitUI();
+        UpdateSatUI(); UpdateTechUI();
         GameManager.instance.UpdateKickedPigs();
         GameManager.instance.UpdatePigCount();
     }
-    public void UpdateBaconUI()
+    private void UpdateSatUI()
+    {
+        if(hasDish == true)
+        {
+            dishButton.GetComponent<Button>().interactable = false;
+            dishCostText.text = L("satellite_dish_max");
+            return;
+        }
+        dishCostText.text = L("satellite_dish");
+
+    } //Localized
+    private void UpdateTechUI()
+    {
+        if (hasTech == true)
+        {
+            techButton.GetComponent<Button>().interactable = false;
+            techCostText.text = L("disassemble_max");//"Disassemble Ship: MAX";
+            return;
+        }
+        techCostText.text = L("disassemble");
+    } //Localkized
+    private void UpdatePermitUI()
+    {
+        if (GameManager.instance.pigsMax >= (10 + GameManager.instance.newGamePlus))
+        {
+            permitCostText.text = L("pig_permit_max");
+            permitButton.interactable = false;
+        }
+        else
+            permitCostText.text = L("pig_permit", permitCost);
+    } //Localized
+    private void UpdateSuckoUI()
+    {
+        suckoCostText.text = suckoBought
+            ? "Suck-o 3000: MAX"
+            : L("sucko");
+    } //Localized
+    public void UpdateBaconUI() //Localized
     {
         baconText.text = L("bacon_count", GameManager.instance.baconCount);
         baconTotalText.text = L("bacon_total", GameManager.instance.baconTotal);
@@ -489,37 +530,31 @@ public class ShopManager : MonoBehaviour
         if(PlayerKick.instance.kickStrength >=20)
         {
             kickCostText.text = L("upgrade_kick_max");
+            kickUI.text = L("kick_strength", PlayerKick.instance.kickStrength);
             return;
         }
         kickCostText.text = L("upgrade_kick_cost", kickCost);
         kickUI.text = L("kick_strength", PlayerKick.instance.kickStrength);
-    }
+    } //Localized
     private void UpdateTroughUI()
     {
         if (PassiveBacon.instance.spawnInterval <= 2f)
-        {
-            troughCostText.text = "+Trough: MAX";
-        }
+            troughCostText.text = L("trough_cost_max");
         else
-            troughCostText.text = "+Trough: " + troughCost + " bacon";
-    }
+            troughCostText.text = L("trough_cost", troughCost);
+    } //Localized
     private void UpdatePatchUI()
     {
         if (CarrotPatches.instance.normalPatch.spawnInterval <= 10f)
-        {
-            patchCostText.text = "+Patch: MAX";
-        }
+            patchCostText.text = L("patch_cost_max");
         else
-            patchCostText.text = "+Patch: " + patchCost + " bacon";
+            patchCostText.text = L("patch_cost", patchCost);
 
         if (CarrotPatches.instance.goldPatch.spawnInterval <= 10f)
-        {
-            goldPatchCostText.text = "+Gold Patch: MAX";
-        }
+            patchCostText.text = L("goldpatch_cost_max");
         else
-            goldPatchCostText.text = "+Gold Patch: " + goldPatchCost + " bacon";
-        
-    }
+            patchCostText.text = L("goldpatch_cost", goldPatchCost);
+    } //Localized
     public void UpdateAmounts()
     {
         // TROUGH
@@ -556,6 +591,35 @@ public class ShopManager : MonoBehaviour
         
         permitAmountText.text = $"{GameManager.instance.pigsMax}/10";
         kickAmountText.text = $"{PlayerKick.instance.kickStrength}/20";
+    } //just numbers, no need for localization
+    public string L(string key, params object[] args)
+    {
+        string[] tables =
+        {
+        "shop",
+        "shop_pigs",
+        "unlocks",
+        "MenuTable"
+    };
+
+        foreach (string tableName in tables)
+        {
+            var table = LocalizationSettings.StringDatabase.GetTable(tableName);
+            if (table == null) continue;
+
+            var entry = table.GetEntry(key);
+            if (entry == null) continue;
+
+            string value = entry.GetLocalizedString();
+
+            if (args != null && args.Length > 0)
+                value = string.Format(value, args);
+
+            return value;
+        }
+
+        Debug.LogWarning($"Localization key not found: {key}");
+        return key;
     }
     #endregion
 
@@ -568,6 +632,7 @@ public class ShopManager : MonoBehaviour
             alienBought = alienBought,
             cyborgBought = cyborgBought,
             hasTech = hasTech,
+            hasDish = hasDish,
             suckoBought = suckoBought,
 
             permitCost = permitCost,
@@ -673,20 +738,4 @@ public class ShopManager : MonoBehaviour
     }
 
     #endregion
-
-    public string L(string key, params object[] args)
-    {
-        var table = LocalizationSettings.StringDatabase.GetTable("shop");
-        if (table == null) return key;
-
-        var entry = table.GetEntry(key);
-        if (entry == null) return key;
-
-        string value = entry.GetLocalizedString();
-
-        if (args != null && args.Length > 0)
-            value = string.Format(value, args);
-
-        return value;
-    }
 }

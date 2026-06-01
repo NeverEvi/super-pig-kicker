@@ -123,6 +123,22 @@ MonoBehaviour:
     m_Localized: Farm & Farmer
     m_Metadata:
       m_Items: []
+  - m_Id: 4745450700599296
+    m_Localized: SUPER SPIN KICK!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4745947457187840
+    m_Localized: SUPER PIG KICK!!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4746446327705600
+    m_Localized: Press Space to kick!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4747245288091648
+    m_Localized: 'Score: {0}'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

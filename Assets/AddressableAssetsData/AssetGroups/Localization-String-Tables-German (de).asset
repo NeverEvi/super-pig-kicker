@@ -20,9 +20,23 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-de
+    - Preload
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a672bf03aaa922d4385b378aec1d4ba8
     m_Address: shop_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c99f65afb5d351445a5756eba9084a6a
+    m_Address: unlocks_de
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-de
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec46142250f60094cb2720cfa89e90a3
+    m_Address: shop_pigs_de
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-de

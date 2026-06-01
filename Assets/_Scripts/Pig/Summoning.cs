@@ -358,7 +358,7 @@ public class Summoning : MonoBehaviour
         DEVIL.SetActive(false);
         isSummoning = false;
         GameManager.instance.UpdateScore(100);
-        yield return StartCoroutine(MainMenu.instance.FadeBlackout(0f, 1f));
+        yield return StartCoroutine(MainMenu.instance.FadeBlackout(0f, 1f, MainMenu.instance.fadeDuration));
         CreditsManager.instance.OpenCredits(true);
     }
     
