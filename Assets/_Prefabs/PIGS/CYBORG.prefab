@@ -81,6 +81,10 @@ MonoBehaviour:
   wanderRadius: 7.4
   minWanderChangeInterval: 2.5
   maxWanderChangeInterval: 5
+  fenceLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  wanderTargetAttempts: 10
   kickForce: 5.4
   isUpright: 1
   SSK: {fileID: 0}

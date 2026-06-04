@@ -18,7 +18,9 @@ public class Pig : MonoBehaviour
     public float maxWanderChangeInterval = 5f; // seconds between direction changes
 
     private Vector3 wanderTarget;
-    private Vector3 wanderCenter = new (2.02f, 0.43f, 1.54f);
+    private Vector3 wanderCenter= new (2.02f, 0.43f, 1.54f);
+    [SerializeField] private LayerMask fenceLayer;
+    [SerializeField] private int wanderTargetAttempts = 10;
 
     [Header("Kicking")]
     private Rigidbody rb;
@@ -70,6 +72,7 @@ public class Pig : MonoBehaviour
 
     void Start()
     {
+        //wanderCenter = Center.instance.transform.position;
         foreach (GameObject go in Resources.FindObjectsOfTypeAll<GameObject>())
         {
             if (go.name == "SPINKICK")
@@ -365,30 +368,65 @@ public class Pig : MonoBehaviour
         while (true)
         {
             float nextWanderWait = Random.Range(minWanderChangeInterval, maxWanderChangeInterval);
+
             if (isUpright)
             {
-                Vector3 randomOffset = new(
-                    Random.Range(-wanderRadius, wanderRadius),
-                    0f,
-                    Random.Range(-wanderRadius, wanderRadius)
-                );
-
-                rawWanderTarget = wanderCenter + randomOffset;
-                if (beenKicked 
-                    && pigType!=PigType.Boar 
-                    && pigType != PigType.Cyboarg 
-                    && pigType != PigType.Devil) 
+                for (int i = 0; i < wanderTargetAttempts; i++)
                 {
-                    Vector3 awayFromPlayer = (transform.position - player.transform.position).normalized;
+                    Vector3 randomOffset = new(
+                        Random.Range(-wanderRadius, wanderRadius),
+                        0f,
+                        Random.Range(-wanderRadius, wanderRadius)
+                    );
 
-                    // VERY slight influence (tweak this)
-                    float avoidStrength = 0.35f;
+                    Vector3 candidateRawTarget = wanderCenter + randomOffset;
+                    bool targetPassesNearPlayer = false;
 
-                    randomOffset += awayFromPlayer * (wanderRadius * avoidStrength);
+                    if (beenKicked
+                        && pigType != PigType.Boar
+                        && pigType != PigType.Cyboarg
+                        && pigType != PigType.Devil)
+                    {
+                        Vector3 awayFromPlayer = (transform.position - player.transform.position).normalized;
+                        float healthPercent = hp / mhp;
+
+                        float avoidStrength = Mathf.Lerp(
+                            0.35f, // healthy pig
+                            0.8f,  // nearly dead pig
+                            1f - healthPercent
+                        );
+
+                        randomOffset += awayFromPlayer * (wanderRadius * avoidStrength);
+
+                        Vector3 pigFlat = transform.position;
+                        Vector3 playerFlat = player.transform.position;
+                        Vector3 targetFlat = wanderCenter + randomOffset;
+
+                        pigFlat.y = 0f;
+                        playerFlat.y = 0f;
+                        targetFlat.y = 0f;
+
+                        float playerDistanceFromPath =
+                            Vector3.Distance(playerFlat, ClosestPointOnLineSegment(pigFlat, targetFlat, playerFlat));
+
+                        targetPassesNearPlayer = playerDistanceFromPath < 1f;
+                    }
+
+                    Vector3 candidateAdjustedTarget = wanderCenter + randomOffset;
+
+                    Vector3 rayStart = transform.position + Vector3.up * 0.5f;
+                    Vector3 rayEnd = candidateAdjustedTarget + Vector3.up * 0.5f;
+
+                    bool fenceBetweenPigAndTarget =
+                        Physics.Linecast(rayStart, rayEnd, fenceLayer);
+
+                    if (!fenceBetweenPigAndTarget && !targetPassesNearPlayer)
+                    {
+                        rawWanderTarget = candidateRawTarget;
+                        wanderTarget = candidateAdjustedTarget;
+                        break;
+                    }
                 }
-                wanderTarget = wanderCenter + randomOffset;
-
-                
             }
 
             yield return new WaitForSeconds(nextWanderWait);
@@ -507,23 +545,21 @@ public class Pig : MonoBehaviour
     }
     #endregion
 
+    private Vector3 ClosestPointOnLineSegment(Vector3 a, Vector3 b, Vector3 point)
+    {
+        Vector3 ab = b - a;
+        float t = Vector3.Dot(point - a, ab) / ab.sqrMagnitude;
+        t = Mathf.Clamp01(t);
+
+        return a + ab * t;
+    }
+
     void OnDrawGizmosSelected()
     {
         // only draw in editor when pig is selected
         Gizmos.color = new Color(0f, 1f, 0f, 0.25f); // semi-transparent green
         Gizmos.DrawSphere(wanderCenter, wanderRadius);
 
-        // optional: draw a line to current target
-        if (Application.isPlaying)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawLine(transform.position, wanderTarget);
-            Gizmos.DrawSphere(wanderTarget, 0.1f);
-
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawLine(transform.position, rawWanderTarget);
-            Gizmos.DrawWireSphere(rawWanderTarget, 0.1f);
-        }
         Gizmos.color = new Color(1f, 0f, 0f, 0.15f);
         if(combat)
             Gizmos.DrawSphere(transform.position, combat.cannibalRadius);
@@ -539,5 +575,19 @@ public class Pig : MonoBehaviour
         Gizmos.matrix = Matrix4x4.TRS(worldCenter, transform.rotation, transform.lossyScale);
         Gizmos.DrawWireCube(Vector3.zero, size);
 
+    }
+    private void OnDrawGizmos()
+    {
+        // optional: draw a line to current target
+        if (Application.isPlaying)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(transform.position, wanderTarget);
+            Gizmos.DrawSphere(wanderTarget, 0.1f);
+
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawLine(transform.position, rawWanderTarget);
+            Gizmos.DrawWireSphere(rawWanderTarget, 0.1f);
+        }
     }
 }
