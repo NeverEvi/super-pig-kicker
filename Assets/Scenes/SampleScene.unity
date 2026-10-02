@@ -17733,7 +17733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1065724521513895930, guid: 26cb3d376f30d5b4eb88bc80285d945e, type: 3}
       propertyPath: m_text
-      value: V0.99.87
+      value: V0.99.93
       objectReference: {fileID: 0}
     - target: {fileID: 1068990857671372692, guid: 26cb3d376f30d5b4eb88bc80285d945e, type: 3}
       propertyPath: m_IsActive
@@ -18883,9 +18883,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 113600868}
     - target: {fileID: 6743024713994093655, guid: 26cb3d376f30d5b4eb88bc80285d945e, type: 3}
+      propertyPath: BoarCostText
+      value: 
+      objectReference: {fileID: 1823769222}
+    - target: {fileID: 6743024713994093655, guid: 26cb3d376f30d5b4eb88bc80285d945e, type: 3}
       propertyPath: SettingsPanel2
       value: 
       objectReference: {fileID: 780510199}
+    - target: {fileID: 6743024713994093655, guid: 26cb3d376f30d5b4eb88bc80285d945e, type: 3}
+      propertyPath: CyboargCostText
+      value: 
+      objectReference: {fileID: 2108990070}
     - target: {fileID: 6863653301955186331, guid: 26cb3d376f30d5b4eb88bc80285d945e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1

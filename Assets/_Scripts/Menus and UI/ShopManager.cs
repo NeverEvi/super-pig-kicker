@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 using UnityEngine.Localization.PropertyVariants.TrackedProperties;
+using UnityEngine.Localization.Components;
 
 public class ShopManager : MonoBehaviour
 {
@@ -26,6 +27,9 @@ public class ShopManager : MonoBehaviour
     public GameObject CyborgButton, CyboargButton, AngelButton, DevilButton;
     public TextMeshProUGUI DevilCostText;
     public GameObject BoarButton;
+    public TextMeshProUGUI BoarCostText;
+    public TextMeshProUGUI CyboargCostText;
+
 
 
     [Header("Carrot Patch Upgrade")]
@@ -564,6 +568,7 @@ public class ShopManager : MonoBehaviour
         UpdateTroughUI(); UpdatePatchUI(); UpdateKickUI();
         UpdateAmounts();
         UpdateSuckoUI(); UpdatePermitUI();
+        UpdatePigUI();
         UpdateSatUI(); UpdateTechUI();
         GameManager.instance.UpdateKickedPigs();
         GameManager.instance.UpdatePigCount();
@@ -600,6 +605,24 @@ public class ShopManager : MonoBehaviour
         else
             permitCostText.text = L("pig_permit", permitCost);
     } //Localized
+
+    private void UpdatePigUI()
+    {
+        if (freeVersion)
+        {
+            LocalizeStringEvent boarLocalize = BoarCostText.gameObject.GetComponent<LocalizeStringEvent>();
+            boarLocalize.StringReference.SetReference(
+                "MenuTable",
+                "full_version_required");
+            boarLocalize.RefreshString();
+            LocalizeStringEvent cyboargLocalize = CyboargCostText.gameObject.GetComponent<LocalizeStringEvent>();
+            cyboargLocalize.StringReference.SetReference(
+                "MenuTable",
+                "full_version_required");
+            cyboargLocalize.RefreshString();
+            return;
+        }
+    }
     private void UpdateSuckoUI()
     {
         if (freeVersion)
