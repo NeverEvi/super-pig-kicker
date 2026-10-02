@@ -107,6 +107,10 @@ MonoBehaviour:
     m_Key: score
     m_Metadata:
       m_Items: []
+  - m_Id: 49668822454431744
+    m_Key: full_version_required
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

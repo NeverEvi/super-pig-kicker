@@ -3,9 +3,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
+using UnityEngine.Localization.PropertyVariants.TrackedProperties;
 
 public class ShopManager : MonoBehaviour
 {
+    
     public static ShopManager instance;
     public TextMeshProUGUI baconText; // currency display
     public TextMeshProUGUI baconTotalText;
@@ -23,6 +25,7 @@ public class ShopManager : MonoBehaviour
     [Header("Other Pigs")]
     public GameObject CyborgButton, CyboargButton, AngelButton, DevilButton;
     public TextMeshProUGUI DevilCostText;
+    public GameObject BoarButton;
 
 
     [Header("Carrot Patch Upgrade")]
@@ -87,6 +90,9 @@ public class ShopManager : MonoBehaviour
     public int troughCost = 10;        // starting cost
     readonly private float troughUpgradeAmount = 0.5f;
 
+    private const int AngelUnlockBacon = 25000;
+
+
     public enum UpgradeWhat 
     { 
         Trough,
@@ -97,7 +103,36 @@ public class ShopManager : MonoBehaviour
     }
     public UpgradeWhat what;
 
-    void Awake() => instance = this;
+    
+
+    [SerializeField] private bool freeVersion = true;
+    //Locks BOARs
+    //Locks CYBOARGs
+    //Locks Suck-O
+    //Limits pig permits to 7 (instead of 10)
+    //Limits how many unopened crates you can have at a time to 3 (instead of 5)
+    //Limits trough upgrade to max out at 6 seconds (instead of 2)
+    //Limits max kick strength to 19 (instead of 20)
+    //Limits gold carrot patch upgrade to max out at 15 seconds (instead of 10)
+    int unopenedCrateAllowance = 5;
+    int maxPigPermitAllowance = 10;
+    float troughUpgradeMinimumInterval = 2f;
+    float goldPatchUpgradeMinimumInterval = 10f;
+    int kickStrengthMaxUpgrade = 20;
+    public GameObject freeLabel;
+
+    void Awake()
+    {
+        instance = this;
+
+        unopenedCrateAllowance = freeVersion ? 3 : 5;
+        maxPigPermitAllowance = freeVersion ? 7 : 10;
+        troughUpgradeMinimumInterval = freeVersion ? 6f : 2f;
+        kickStrengthMaxUpgrade = freeVersion ? 19 : 20;
+        goldPatchUpgradeMinimumInterval = freeVersion ? 15f : 10f;
+        freeLabel.SetActive(freeVersion);
+    }
+
     void Start()
     {
         
@@ -137,9 +172,19 @@ public class ShopManager : MonoBehaviour
 
     public void BuyItem(int cost)
     {
+        var eventSystem = UnityEngine.EventSystems.EventSystem.current;
+        GameObject selected = eventSystem != null
+            ? eventSystem.currentSelectedGameObject
+            : null;
+
+        if (selected == null || cost < 0)
+        {
+            PlayFailSound();
+            return;
+        }
         if (GameManager.instance.baconCount >= cost)
         {
-            string itemName = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name;
+            string itemName = selected.name;
             Vector3 spawnpos = new (Random.Range(-2f, 6f), Random.Range(4f, 5.5f), Random.Range(-2f, 4f));
             
             if(TryBuyPig(itemName, spawnpos)) 
@@ -156,14 +201,55 @@ public class ShopManager : MonoBehaviour
     }
     private bool TryBuyPig(string itemName, Vector3 spawnpos)
     {
+        if (itemName == "DEVIL")
+        {
+            if (DayCycle.instance.bossFight ||
+                Summoning.instance.isSummoning)
+            {
+                return false;
+            }
+
+            if (isOpen)
+                ToggleShop();
+
+            Summoning.instance.SUMMON();
+
+            if (DevilButton != null)
+                DevilButton.GetComponent<Button>().interactable = false;
+
+            return true;
+        }
+
+        switch (itemName)
+        {
+            case "PIG":
+            case "BOAR":
+            case "GOLDPIG":
+            case "ALIEN":
+            case "CYBORG":
+            case "CYBOARG":
+            case "ANGEL":
+                break;
+
+            default:
+                return false;
+        }
+
         int pigs = GameManager.instance.pigsCount;
         int maxPigs = GameManager.instance.pigsMax;
         int crates = GameManager.instance.crateCount;
 
-        if (pigs < maxPigs && crates < 5)
+        if (pigs < maxPigs && crates < unopenedCrateAllowance)
         {
-            if(itemName != "DEVIL")
+            
+            if(freeVersion && 
+                (itemName == "CYBOARG" ||
+                 itemName == "BOAR"))
+
             {
+                return false;
+            }
+
                 GameObject pigCrate = Instantiate(cratePrefab, spawnpos, Quaternion.identity);
                 Crate crate = pigCrate.GetComponent<Crate>();
                 switch (itemName)
@@ -199,23 +285,14 @@ public class ShopManager : MonoBehaviour
                             cyborgBought = true;
                             GameManager.instance.SPK += 0.01f;
                             Unlock(goldPatchButton, L("unlock_goldpatch"),false,true, goldPatch);
-                            Unlock(CyboargButton, "CyBOARg");
+                            Unlock(CyboargButton, "CyBOARg", false, !freeVersion);
                         }
                         break;
                     case "CYBOARG": crate.pigType = PigType.Cyboarg; break;
                     case "ANGEL": crate.pigType = PigType.Angel; break;
                 }
-            }
-            else
-            {
-                if (!DayCycle.instance.bossFight)
-                {
-                    ToggleShop();
-                    Summoning.instance.SUMMON();
-                    DevilButton.GetComponent<Button>().interactable = false;
-                }
-
-            }
+            
+            
             return true;
         }
         return false;
@@ -248,9 +325,10 @@ public class ShopManager : MonoBehaviour
         else PlayFailSound();
     }
 
-    public void BuySucker() //Buy the Satellite dish to unlock Aliens
+    public void BuySucker() 
     {
-        if (GameManager.instance.baconCount >= 1200 && Sucko.activeSelf == false)
+        
+        if (GameManager.instance.baconCount >= 1200 && Sucko.activeSelf == false && !freeVersion)
         {
             GameManager.instance.baconCount -= 1200;
             Sucko.SetActive(true);
@@ -259,6 +337,7 @@ public class ShopManager : MonoBehaviour
             PlayBuySound();
             UpdateUI();
         }
+        
         else PlayFailSound();
     }
     #endregion
@@ -267,8 +346,10 @@ public class ShopManager : MonoBehaviour
     public void BuyPermit() //Buy pig permits
     {
         int maxPigs = GameManager.instance.pigsMax;
+        
 
-        if (GameManager.instance.baconCount >= permitCost && maxPigs < 10)
+        if (GameManager.instance.baconCount >= permitCost && maxPigs < 
+            maxPigPermitAllowance + GameManager.instance.newGamePlus)
         {
             
             GameManager.instance.baconCount -= permitCost;
@@ -293,8 +374,10 @@ public class ShopManager : MonoBehaviour
     #region TROUGH
     public void BuyTrough()
     {
+        
+
         if (GameManager.instance.baconCount >= troughCost 
-            && PassiveBacon.instance.spawnInterval > 2f)
+            && PassiveBacon.instance.spawnInterval > troughUpgradeMinimumInterval)
         {
             GameManager.instance.baconCount -= troughCost;
             UpgradeTrough();
@@ -305,10 +388,10 @@ public class ShopManager : MonoBehaviour
     }
     private void UpgradeTrough()
     {
-        PassiveBacon.instance.spawnInterval = Mathf.Max(2f, PassiveBacon.instance.spawnInterval - troughUpgradeAmount);
+        PassiveBacon.instance.spawnInterval = Mathf.Max(troughUpgradeMinimumInterval, PassiveBacon.instance.spawnInterval - troughUpgradeAmount);
 
         troughCost = Mathf.RoundToInt(1.3f*troughCost);
-        if (PassiveBacon.instance.spawnInterval <= 2f && troughButton != null)
+        if (PassiveBacon.instance.spawnInterval <= troughUpgradeMinimumInterval && troughButton != null)
         {
             troughButton.interactable = false;
         }
@@ -318,8 +401,9 @@ public class ShopManager : MonoBehaviour
     #region KICK
     public void BuyKick()
     {
+
         if (GameManager.instance.baconCount >= kickCost
-            && PlayerKick.instance.kickStrength<20)
+            && PlayerKick.instance.kickStrength< kickStrengthMaxUpgrade)
         {
             GameManager.instance.baconCount -= kickCost;
             UpgradeKick();
@@ -334,7 +418,7 @@ public class ShopManager : MonoBehaviour
         GameManager.instance.SPK += 0.005f;
         GameManager.instance.SSK += 0.002f;
         kickCost = Mathf.RoundToInt(1.53f * kickCost);
-        if (PlayerKick.instance.kickStrength>=20)
+        if (PlayerKick.instance.kickStrength>= kickStrengthMaxUpgrade)
             kickButton.interactable = false;
     }
     #endregion
@@ -360,7 +444,7 @@ public class ShopManager : MonoBehaviour
             return;
         }
         if (GameManager.instance.baconCount >= goldPatchCost &&
-                CarrotPatches.instance.goldPatch.spawnInterval > 10f)
+                CarrotPatches.instance.goldPatch.spawnInterval > goldPatchUpgradeMinimumInterval)
         {
             GameManager.instance.baconCount -= goldPatchCost;
             UpgradePatch(true);
@@ -396,11 +480,11 @@ public class ShopManager : MonoBehaviour
             float multiplier = Mathf.Lerp(1.22f, 1.45f, progress);
 
             CarrotPatches.instance.goldPatch.spawnInterval =
-                Mathf.Max(10f, CarrotPatches.instance.goldPatch.spawnInterval - goldPatchUpgradeAmount);
+                Mathf.Max(goldPatchUpgradeMinimumInterval, CarrotPatches.instance.goldPatch.spawnInterval - goldPatchUpgradeAmount);
 
             goldPatchCost = Mathf.RoundToInt(multiplier * goldPatchCost);
 
-            if (CarrotPatches.instance.goldPatch.spawnInterval <= 10f && goldPatchButton != null)
+            if (CarrotPatches.instance.goldPatch.spawnInterval <= goldPatchUpgradeMinimumInterval && goldPatchButton != null)
             {
                 goldPatchButton.GetComponent<Button>().interactable = false;
             }
@@ -446,7 +530,8 @@ public class ShopManager : MonoBehaviour
         if (!isOpen && Summoning.instance.isSummoning) return;
         isOpen = !isOpen;
         shopPanel.SetActive(isOpen);
-        if (!AngelButton.activeSelf && GameManager.instance.baconTotal >= 25000) Unlock(AngelButton, L("unlock_angel"));
+        if (!AngelButton.activeSelf && GameManager.instance.baconTotal >= AngelUnlockBacon)
+            Unlock(AngelButton, L("unlock_angel"));
         UpdateUI();
         UpdatePauseAndCursor();
     }
@@ -482,6 +567,7 @@ public class ShopManager : MonoBehaviour
         UpdateSatUI(); UpdateTechUI();
         GameManager.instance.UpdateKickedPigs();
         GameManager.instance.UpdatePigCount();
+        RefreshButtonStates();
     }
     private void UpdateSatUI()
     {
@@ -506,7 +592,7 @@ public class ShopManager : MonoBehaviour
     } //Localkized
     private void UpdatePermitUI()
     {
-        if (GameManager.instance.pigsMax >= (10 + GameManager.instance.newGamePlus))
+        if (GameManager.instance.pigsMax >= (maxPigPermitAllowance + GameManager.instance.newGamePlus))
         {
             permitCostText.text = L("pig_permit_max");
             permitButton.interactable = false;
@@ -516,6 +602,11 @@ public class ShopManager : MonoBehaviour
     } //Localized
     private void UpdateSuckoUI()
     {
+        if (freeVersion)
+        {
+            suckoCostText.text = L("full_version_required");
+            return;
+        }
         suckoCostText.text = suckoBought
             ? "Suck-o 3000: MAX"
             : L("sucko");
@@ -527,7 +618,7 @@ public class ShopManager : MonoBehaviour
     }
     private void UpdateKickUI()
     {
-        if(PlayerKick.instance.kickStrength >=20)
+        if(PlayerKick.instance.kickStrength >=kickStrengthMaxUpgrade)
         {
             kickCostText.text = L("upgrade_kick_max");
             kickUI.text = L("kick_strength", PlayerKick.instance.kickStrength);
@@ -538,7 +629,8 @@ public class ShopManager : MonoBehaviour
     } //Localized
     private void UpdateTroughUI()
     {
-        if (PassiveBacon.instance.spawnInterval <= 2f)
+        
+        if (PassiveBacon.instance.spawnInterval <= troughUpgradeMinimumInterval)
             troughCostText.text = L("trough_cost_max");
         else
             troughCostText.text = L("trough_cost", troughCost);
@@ -550,19 +642,18 @@ public class ShopManager : MonoBehaviour
         else
             patchCostText.text = L("patch_cost", patchCost);
 
-        if (CarrotPatches.instance.goldPatch.spawnInterval <= 10f)
-            patchCostText.text = L("goldpatch_cost_max");
+        if (CarrotPatches.instance.goldPatch.spawnInterval <= goldPatchUpgradeMinimumInterval)
+            goldPatchCostText.text = L("goldpatch_cost_max");
         else
-            patchCostText.text = L("goldpatch_cost", goldPatchCost);
+            goldPatchCostText.text = L("goldpatch_cost", goldPatchCost);
     } //Localized
     public void UpdateAmounts()
     {
         // TROUGH
         float troughStart = 30f;
-        float troughMin = 2f;
         float troughStep = 0.5f;
 
-        int troughMax = Mathf.RoundToInt((troughStart - troughMin) / troughStep);
+        int troughMax = Mathf.RoundToInt((troughStart - troughUpgradeMinimumInterval) / troughStep);
         int troughCurrent = Mathf.RoundToInt((troughStart - PassiveBacon.instance.spawnInterval) / troughStep);
 
         troughAmountText.text = $"{troughCurrent}/{troughMax}";
@@ -574,6 +665,8 @@ public class ShopManager : MonoBehaviour
         float patchStep = 1f;
 
         int patchMax = Mathf.RoundToInt((patchStart - patchMin) / patchStep);
+        int goldPatchMax = Mathf.RoundToInt((patchStart - goldPatchUpgradeMinimumInterval) / patchStep);
+
         int patchCurrent = Mathf.RoundToInt(
             (patchStart - CarrotPatches.instance.normalPatch.spawnInterval) / patchStep);
 
@@ -586,11 +679,11 @@ public class ShopManager : MonoBehaviour
             int goldPatchCurrent = Mathf.RoundToInt(
                 (patchStart - CarrotPatches.instance.goldPatch.spawnInterval) / patchStep);
 
-            goldPatchAmountText.text = $"{goldPatchCurrent}/{patchMax}";
+            goldPatchAmountText.text = $"{goldPatchCurrent}/{goldPatchMax}";
         }
         
-        permitAmountText.text = $"{GameManager.instance.pigsMax}/10";
-        kickAmountText.text = $"{PlayerKick.instance.kickStrength}/20";
+        permitAmountText.text = $"{GameManager.instance.pigsMax}/{maxPigPermitAllowance + GameManager.instance.newGamePlus}";
+        kickAmountText.text = $"{PlayerKick.instance.kickStrength}/{kickStrengthMaxUpgrade}";
     } //just numbers, no need for localization
     public string L(string key, params object[] args)
     {
@@ -653,6 +746,7 @@ public class ShopManager : MonoBehaviour
         goldenPigBought = data.goldenPigBought;
         alienBought = data.alienBought;
         cyborgBought = data.cyborgBought;
+        hasDish = data.hasDish;
         hasTech = data.hasTech;
         suckoBought = data.suckoBought;
 
@@ -670,8 +764,6 @@ public class ShopManager : MonoBehaviour
             DevilCostText.text = data.devilCostText;
         }
 
-        RefreshButtonStates();
-
         UpdateUI();
     }
 
@@ -682,10 +774,10 @@ public class ShopManager : MonoBehaviour
             patchButton.SetActive(goldenPigBought);
 
         if (Dish != null)
-            Dish.SetActive(alienBought || hasTech);
+            Dish.SetActive(hasDish);
 
         if (AlienButton != null)
-            AlienButton.SetActive(Dish != null && Dish.activeSelf);
+            AlienButton.SetActive(hasDish);
 
         if (UFO != null)
             UFO.SetActive(alienBought && !hasTech);
@@ -708,19 +800,22 @@ public class ShopManager : MonoBehaviour
         if (CyboargButton != null)
             CyboargButton.SetActive(cyborgBought);
 
-        if (AngelButton != null && GameManager.instance.baconTotal >= 5000)
-            AngelButton.SetActive(true);
+        if (AngelButton != null)
+            AngelButton.SetActive(GameManager.instance.baconTotal >= AngelUnlockBacon);
+        if (StarFall.instance != null)
+            StarFall.instance.enabled = alienBought;
     }
     private void RefreshButtonStates()
     {
         if (dishButton != null)
-            dishButton.interactable = !hasTech && (Dish == null || !Dish.activeSelf);
+            dishButton.interactable = !hasDish;
 
         if (permitButton != null)
-            permitButton.interactable = GameManager.instance.pigsMax < 10;
+            permitButton.interactable = GameManager.instance.pigsMax <
+                maxPigPermitAllowance + GameManager.instance.newGamePlus;
 
         if (troughButton != null && PassiveBacon.instance != null)
-            troughButton.interactable = PassiveBacon.instance.spawnInterval > 2f;
+            troughButton.interactable = PassiveBacon.instance.spawnInterval > troughUpgradeMinimumInterval;
 
         if (patchButton != null && CarrotPatches.instance != null)
             patchButton.GetComponent<Button>().interactable =
@@ -728,13 +823,24 @@ public class ShopManager : MonoBehaviour
 
         if (goldPatchButton != null && CarrotPatches.instance != null)
             goldPatchButton.GetComponent<Button>().interactable =
-                CarrotPatches.instance.goldPatch.spawnInterval > 10f;
+                CarrotPatches.instance.goldPatch.spawnInterval > goldPatchUpgradeMinimumInterval;
 
         if (kickButton != null)
-            kickButton.interactable = PlayerKick.instance.kickStrength < 20;
+            kickButton.interactable = PlayerKick.instance.kickStrength < kickStrengthMaxUpgrade;
 
         if (suckoButton != null)
-            suckoButton.interactable = !suckoBought;
+            suckoButton.interactable = !freeVersion && !suckoBought;
+
+        if (BoarButton != null)
+            BoarButton.GetComponent<Button>().interactable = !freeVersion;
+
+        if (CyboargButton != null)
+            CyboargButton.GetComponent<Button>().interactable =
+                !freeVersion && cyborgBought;
+
+        if (techButton != null)
+            techButton.GetComponent<Button>().interactable =
+                alienBought && !hasTech;
     }
 
     #endregion

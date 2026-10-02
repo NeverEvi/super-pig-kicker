@@ -114,6 +114,10 @@ MonoBehaviour:
     m_Localized: "Puntuaci\xF3n: {0}"
     m_Metadata:
       m_Items: []
+  - m_Id: 49668822454431744
+    m_Localized: "Se requiere la versi\xF3n completa"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

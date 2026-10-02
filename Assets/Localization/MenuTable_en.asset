@@ -139,6 +139,10 @@ MonoBehaviour:
     m_Localized: 'Score: {0}'
     m_Metadata:
       m_Items: []
+  - m_Id: 49668822454431744
+    m_Localized: Full Version Required.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
